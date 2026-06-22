@@ -1,0 +1,11 @@
+# Secrets — NEVER commit
+**/.env
+.env
+
+# Dependencies
+**/node_modules/
+node_modules/
+
+# Logs / scratch
+*.log
+server/test-face.jpg

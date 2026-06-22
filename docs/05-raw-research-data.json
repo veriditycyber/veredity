@@ -1,0 +1,360 @@
+{
+  "summary": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+  "agentCount": 111,
+  "logs": [
+    "Q: Research the market for multi-modal deepfake detection and \"agentic security\" (s…",
+    "Decomposed into 6 angles: primary-source statistics & fraud projections, market-sizing report verification, company funding & milestone verification, regulatory & policy catalysts, competitive landscape & technical approaches, agentic security subsegment",
+    "competitive landscape & technical approaches: 6 results",
+    "primary-source statistics & fraud projections: 6 results",
+    "company funding & milestone verification: 6 results",
+    "company funding & milestone verification: 4 novel (2 filtered)",
+    "market-sizing report verification: 6 results",
+    "market-sizing report verification: 5 novel (1 filtered)",
+    "agentic security subsegment: 6 results",
+    "agentic security subsegment: 3 novel (3 filtered)",
+    "regulatory & policy catalysts: 6 results",
+    "regulatory & policy catalysts: 4 novel (2 filtered)",
+    "Fetched 28 sources → 109 claims → verifying top 25",
+    "\"Deloitte Center for Financial Services projects th…\": 3-0 ✓",
+    "\"The Fed survey identified mule account activity as…\": 3-0 ✓",
+    "\"Federal Reserve Financial Services surveyed more t…\": 3-0 ✓",
+    "\"ID.me raised $340 million in September 2025 (Serie…\": 3-0 ✓",
+    "\"ID.me explicitly frames its funding and product ar…\": 3-0 ✓",
+    "\"Seven states credited ID.me with preventing more t…\": 0-3 ✗",
+    "\"All evaluated deepfake detection models showed red…\": 3-0 ✓",
+    "\"At its October 2025 Plenary (Paris, 22-24 October …\": 3-0 ✓",
+    "\"The FATF explicitly warns that criminals can explo…\": 3-0 ✓",
+    "\"Robust deepfake detection requires a combination o…\": 3-0 ✓",
+    "\"No fine-tuning method achieved meaningful zero-sho…\": 1-2 ✗",
+    "\"Deloitte's Center for Financial Services predicts …\": 3-0 ✓",
+    "\"UK government figures estimate the volume of AI-ge…\": 2-1 ✓",
+    "\"The Federal Reserve Financial Services Risk Office…\": 3-0 ✓",
+    "\"The Fed survey describes mule-account fraud detect…\": 3-0 ✓",
+    "\"SNS Insider values the global fake image detection…\": 3-0 ✓",
+    "\"Astute Analytica sizes the global fake image detec…\": 3-0 ✓",
+    "\"Market Research Future estimates the global fake i…\": 3-0 ✓",
+    "\"IMARC Group estimates the global identity verifica…\": 3-0 ✓",
+    "\"IMARC Group projects the identity verification mar…\": 3-0 ✓",
+    "\"The CAGR for the fake image detection market (~38.…\": 3-0 ✓",
+    "\"NeuralTrust's product suite targets agentic AI sec…\": 3-0 ✓",
+    "\"IMARC Group forecasts a 13.28% CAGR for the identi…\": 2-1 ✓",
+    "\"NeuralTrust raised a $20 million seed round, descr…\": 2-1 ✓",
+    "\"Persona blocked over 75 million AI-based face-spoo…\": 3-0 ✓",
+    "Verify done: 25 claims → 23 confirmed, 2 killed"
+  ],
+  "result": {
+    "question": "Research the market for multi-modal deepfake detection and \"agentic security\" (securing autonomous AI agents). Verify and expand on these specific claims from a venture thesis: (1) UK government estimate of 8 million deepfakes shared in 2025 vs 500,000 in 2023; (2) Deloitte projection of $40 billion in GenAI-driven fraud losses by 2027; (3) Federal Reserve 2025 survey on mule account activity; (4) market sizes — global fake image detection market $1.5B (2025) to $28.01B (2034) at 38.45% CAGR, identity verification market $14.86B (2025) to $43.38B (2034); (5) company milestones — Reality Defender, Sensity AI, Pindrop, NeuralTrust ($20M seed, doubled ARR Q1 2026), Persona ($200M Series D, blocked 75M deepfakes June 2025), ID.me ($340M Sept 2025, $2B valuation, prevented $270B pandemic fraud); (6) regulatory catalysts — FATF 2025 AI warnings, Hong Kong Monetary Authority adding \"D for deepfake\" to e-banking security framework. Also assess the competitive landscape, key technical approaches (visual/audio/behavioral detection), the \"arms race\" dynamic, and the agentic security subsegment (prompt injection, data poisoning defenses). Flag which claims are accurate, exaggerated, or unverifiable, and identify the strongest and weakest parts of this investment thesis.",
+    "summary": "The venture thesis is largely well-sourced, but its accuracy is uneven across claims. The strongest, fully-verifiable pillars are the macro threat-and-fraud statistics (Deloitte's $40B-by-2027 GenAI fraud projection, the Federal Reserve Q4-2025 mule-account/wire-fraud survey, and the UK 500K-to-8M deepfake growth figure), plus the regulatory catalysts (FATF October 2025 Horizon Scan on AI/deepfakes and agentic AI) and company milestones (ID.me's $340M/$2B raise, Persona's deepfake blocking, NeuralTrust's $20M agentic-security seed). The weakest parts are the market-sizing figures: the thesis's fake-image-detection numbers ($1.5B 2025 to $28.01B 2034 at 38.45% CAGR) and identity-verification numbers ($14.86B to $43.38B) do NOT match any verifiable research firm — competing vendors diverge wildly (15.99% to 42.22% CAGR; 2034 endpoints from ~$12.9B to ~$48.6B), so these should be treated as soft, vendor-dependent, and partly unverifiable. Two specific claims are outright wrong: ID.me did NOT prevent \"$270 billion\" in pandemic fraud (refuted), and Persona's 75M figure is full-year 2024, not \"June 2025\" as the thesis implies. The thesis correctly captures the \"arms race\" technical dynamic (all detectors degrade under adversarial/FGSM attack; robustness needs generative modeling + adversarial defenses + cross-dataset adaptation) and the agentic-security subsegment is real and venture-backed, though FATF's framing is about criminals weaponizing AI rather than defending deployed agents.",
+    "findings": [
+      {
+        "claim": "Deloitte's GenAI fraud projection is accurate and correctly framed: GenAI could enable US fraud losses to reach $40B by 2027 (up from $12.3B in 2023) at a 32% CAGR, with a ~$22B conservative-case estimate.",
+        "confidence": "high",
+        "vote": "3-0 (merged from two claims)",
+        "evidence": "Verbatim match to Deloitte Center for Financial Services primary report and corroborated by Biometric Update, Quartz, ID Tech Wire. Math checks out (12.3 * 1.32^4 ≈ 37-40B). Thesis preserves Deloitte's hedged 'could enable' and the base ($40B) vs conservative ($22B) scenario distinction. Caveat: forward-looking single-firm projection, published May 2024 (~2 years old), not measured data.",
+        "sources": [
+          "https://www.deloitte.com/us/en/insights/industry/financial-services/deepfake-banking-fraud-risk-on-the-rise.html",
+          "https://www.biometricupdate.com/202406/deloitte-predicts-losses-of-up-to-40b-from-generative-ai-powered-fraud"
+        ]
+      },
+      {
+        "claim": "The Federal Reserve Financial Services Risk Officer Survey (400+ institutions, fielded Q4 2025, released April 2026) confirms rising fraud across debit/check/ACH/wire channels, with mule-account activity a key driver of wire fraud tied to sophisticated social engineering, and mule fraud is hard to detect because funds are depleted before intervention (51% detect only after losses).",
+        "confidence": "high",
+        "vote": "3-0 (merged from four claims)",
+        "evidence": "Verbatim support from primary frbservices.org report and corroborated by PYMNTS. Specific data: ~half of respondents report mule activity as increasing (18%) or persistent (29%), up 12% over 2023; 51% identify mule activity only after losses. The thesis labels it a '2025 survey' — survey was fielded Q4 2025 but published in the 2026 Risk Officer Report; PYMNTS's 'April 28' release date is ~6 days off (Fed's own URL indicates April 22). Immaterial to the substance.",
+        "sources": [
+          "https://www.frbservices.org/news/fed360/issues/051426/risk-management-2026-risk-officer-report",
+          "https://www.pymnts.com/cybersecurity/fraud-prevention/2026/fed-report-puts-banks-on-alert-over-rising-fraud-threats"
+        ]
+      },
+      {
+        "claim": "The UK 500K-to-8M deepfake growth figure is officially endorsed by the UK government, but it originates from a self-interested AI-detection vendor (DeepMedia) and the 8M is a projection, not a counted statistic.",
+        "confidence": "medium",
+        "vote": "2-1",
+        "evidence": "GOV.UK case study ('Innovating to detect deepfakes', Feb 2026) states '8 million will be shared in 2025, up from 500,000 in 2023' and the figures are widely cited (Europol IOCTA 2025, European Parliament). However, GOV.UK attributes them to Reuters/DeepMedia and OpenFox, both tracing to vendor DeepMedia — not original government measurement, not peer-reviewed. The framing 'UK government figures estimate' overstates independence and rigor.",
+        "sources": [
+          "https://www.globalgovernmentforum.com/uk-government-launches-deepfake-detection-initiative-as-urgent-national-priority/"
+        ]
+      },
+      {
+        "claim": "FATF's October 2025 Plenary (Paris, 22-24 Oct) approved a 'Horizon Scan' explicitly warning that criminals can exploit generative AI, AI agents, and deepfakes for illicit finance — a genuine regulatory catalyst validating the GenAI-fraud/agentic threat framing.",
+        "confidence": "high",
+        "vote": "3-0 (merged from two claims)",
+        "evidence": "Primary FATF outcomes page plus FATF's published 'Horizon Scan: AI and Deepfakes' PDF, corroborated by ComplyAdvantage, ShuftiPro, TLT LLP, ICA, and others. FATF cites criminals using 'a suite of generative and agentic AI systems' and 'autonomous AI agents.' Caveat: a Horizon Scan is informational risk-awareness guidance, not binding regulation — a 'soft' catalyst. FATF's framing is criminals weaponizing AI (AML/CFT), narrower than the thesis's 'agentic security' (defending deployed agents). FATF URL returned HTTP 403 to bots; verified via verbatim quotes in 6+ independent sources.",
+        "sources": [
+          "https://www.fatf-gafi.org/en/publications/Fatfgeneral/outcomes-FATF-plenary-october-2025.html"
+        ]
+      },
+      {
+        "claim": "Hong Kong Monetary Authority adding 'D for deepfake' to its e-banking security framework — UNVERIFIED. No claim on this specific regulatory catalyst survived verification.",
+        "confidence": "low",
+        "vote": "not verified",
+        "evidence": "No verified claim in the surviving set addresses the HKMA 'D for deepfake' framework. It is neither confirmed nor refuted here and should be treated as unverified/requiring independent confirmation.",
+        "sources": []
+      },
+      {
+        "claim": "The technical 'arms race' dynamic is well-supported: all evaluated deepfake detectors (XCeption, ResNet-50, VGG16) lose accuracy under adversarial FGSM perturbations, and robust detection requires combining advanced generative modeling, adversarial defenses, and cross-dataset adaptation.",
+        "confidence": "high",
+        "vote": "3-0 (merged from two claims)",
+        "evidence": "Peer-reviewed MDPI Applied Sciences 2025 (15(3):1225) reports all three CNNs degrade under FGSM (XCeption 79.1%, VGG16 74.3%, ResNet-50 64.2%). Corroborated by arXiv 2003.10596, 2312.08675, 2407.02670, and 2025 generalization literature. Caveat: underlying study tests only 3 CNNs with FGSM, but the multi-pronged-robustness conclusion is field consensus. A related claim that detectors fail zero-shot generalization across unseen generators was REFUTED (1-2).",
+        "sources": [
+          "https://www.mdpi.com/2076-3417/15/3/1225"
+        ]
+      },
+      {
+        "claim": "Identity-verification company milestones are accurate: ID.me raised $340M in Sept 2025 (Series E led by Ribbit Capital plus credit facility) at >$2B valuation, explicitly framed around AI-driven/deepfake fraud per CEO Blake Hall.",
+        "confidence": "high",
+        "vote": "3-0 (merged from two claims)",
+        "evidence": "Primary ID.me press release plus Finovate, Axios Pro, PYMNTS, Biometric Update. Structure: ~$65M Series E equity + ~$275M credit facility = $340M; valuation >$2B. Deepfake framing appears in release body (Hall's direct quote says 'AI' generally). IMPORTANT: the related thesis claim that ID.me 'prevented $270 billion in pandemic fraud' was REFUTED (0-3) — do not include that figure.",
+        "sources": [
+          "https://network.id.me/press-releases/id-me-raises-340-million-to-combat-ai-driven-fraud-and-expand-secure-digital-identity/"
+        ]
+      },
+      {
+        "claim": "Persona blocked 75M+ AI face-spoofing/deepfake attempts — but this is a FULL-YEAR 2024 figure (~50x increase), NOT a June-2025 figure as the thesis implies. The thesis's timing framing is wrong.",
+        "confidence": "high",
+        "vote": "3-0",
+        "evidence": "Persona's own PR Newswire release (Jan 22, 2025): 'In 2024 alone... over 75 million fraud attempts leveraging AI-based face spoofs' and '50x increase in deepfakes.' Corroborated by VentureBeat and 5+ outlets. The 75M and 50x are self-reported, unaudited vendor metrics. The thesis's '$200M Series D' and 'blocked 75M deepfakes June 2025' framing is partly inaccurate on timing.",
+        "sources": [
+          "https://venturebeat.com/ai/75-million-deepfakes-blocked-persona-leads-the-corporate-fight-against-hiring-fraud"
+        ]
+      },
+      {
+        "claim": "The agentic-security subsegment is real and venture-backed: NeuralTrust raised a $20M seed (led by Alstin Capital, claimed largest EU cybersecurity seed) with a three-product agentic-AI suite — TrustGate (agent gateway brokering every LLM/MCP/tool call), TrustGuard (runtime threat detection), TrustLens (posture management).",
+        "confidence": "high",
+        "vote": "3-0 / 2-1 (merged from two claims)",
+        "evidence": "PR Newswire (June 17, 2026) plus Tech.eu, TechFundingNews, EU-Startups, citybiz. $20M and Alstin Capital lead independently confirmed; product descriptions near-verbatim. Caveats: the 'largest EU cybersecurity seed' superlative is company-originated marketing not independently verified (neutral Tech.eu omits it); product capabilities are vendor descriptions, not audited efficacy. The thesis's 'doubled ARR Q1 2026' detail was not separately verified here.",
+        "sources": [
+          "https://www.prnewswire.com/news-releases/neuraltrust-raises-20m-to-secure-the-growing-swarm-of-ai-agents-in-the-enterprise-302802926.html"
+        ]
+      },
+      {
+        "claim": "The thesis's market-sizing figures are the WEAKEST part: its fake-image-detection numbers ($1.5B 2025 to $28.01B 2034 at 38.45% CAGR) match NO identifiable research firm, and competing vendor estimates diverge enormously.",
+        "confidence": "high",
+        "vote": "3-0 (merged from four claims)",
+        "evidence": "Only the ~$1.5B 2025 base is broadly plausible. SNS Insider: $1.48B (2025) to $4.84B (2033) at 15.99% CAGR. Astute Analytica: $928M (2024) to $12.9B (2033) at 38.95% CAGR (CAGR near thesis's 38.45%, but absolute sizes ~half). Market Research Future: $1.436B (2025) to $48.63B (2035) at 42.22% CAGR. The thesis's exact $28.01B/38.45% combo returned no matching source. These are marketing-driven vendor estimates with false precision and no consensus; treat as soft/partly unverifiable.",
+        "sources": [
+          "https://www.snsinsider.com/reports/fake-image-detection-market-8488",
+          "https://www.astuteanalytica.com/industry-report/fake-image-detection-market",
+          "https://www.marketresearchfuture.com/reports/fake-image-detection-market-22192"
+        ]
+      },
+      {
+        "claim": "The thesis's identity-verification market sizing ($14.86B 2025 to $43.38B 2034) is also vendor-divergent: IMARC gives $15.8B (2025) to $50.2B (2034) at 13.28% CAGR — higher absolute figures but a much lower CAGR than the thesis's fake-image-detection growth narrative.",
+        "confidence": "high",
+        "vote": "3-0 / 2-1 (merged from three claims)",
+        "evidence": "IMARC primary page confirms $15.8B/$50.2B/13.28% (2026-2034). Thesis figures (~$14.86B/$43.38B) likely derive from a different firm (~Precedence Research, implying ~12.6% CAGR — actually slightly below IMARC). IMARC itself publishes internally inconsistent numbers across pages ($46.4B by 2033 at 14.4%; $140.3B by 2032 elsewhere). Inter-firm variance is routine; the identity-verification segment is more conservatively/consistently growing (~12-14% CAGR) than the explosive fake-image-detection CAGRs.",
+        "sources": [
+          "https://www.imarcgroup.com/identity-verification-market"
+        ]
+      },
+      {
+        "claim": "Reality Defender, Sensity AI, and Pindrop competitive-landscape milestones — UNVERIFIED in this synthesis. No surviving claim addressed these companies' specific milestones.",
+        "confidence": "low",
+        "vote": "not verified",
+        "evidence": "The verification set produced confirmed claims for ID.me, Persona, and NeuralTrust, but no claim survived covering Reality Defender, Sensity AI, or Pindrop. Their inclusion in the thesis is plausible (well-known players in voice/visual deepfake detection) but their specific milestones are unverified here.",
+        "sources": []
+      }
+    ],
+    "caveats": "Time-sensitivity: market-sizing and fundraising figures move fast; Deloitte's projection is ~2 years old (May 2024) and is a forecast, not measured data. Source quality varies sharply: macro fraud/regulatory claims rest on PRIMARY sources (Deloitte, Federal Reserve, FATF) and peer-reviewed research, while all market-size claims rest on marketing-driven research-vendor reports (SNS Insider, Astute Analytica, MRF, IMARC) that disagree by 2-3x on size and 15-42% on CAGR — these are inherently soft and should never be cited as single authoritative numbers. Several headline metrics are self-reported vendor marketing (Persona's 75M/50x, NeuralTrust's 'largest EU seed', DeepMedia's 8M deepfakes) and are unaudited. Two thesis claims are demonstrably wrong: ID.me's '$270B pandemic fraud prevented' (refuted 0-3) and Persona's deepfake figure being 'June 2025' (it is full-year 2024). FATF/regulatory primary URLs were bot-blocked (HTTP 403) and verified via verbatim quotes in multiple independent secondary sources rather than direct fetch.",
+    "openQuestions": [
+      "Does the HKMA 'D for deepfake' e-banking security framework claim hold up? It was not verified here and needs independent confirmation from HKMA primary sources.",
+      "What is the actual source/firm behind the thesis's specific fake-image-detection figures ($28.01B/2034 at 38.45% CAGR) and identity-verification figures ($14.86B/$43.38B)? They match no verified firm exactly — likely Precedence Research for identity verification, but the fake-image-detection source is unidentified.",
+      "Are the Reality Defender, Sensity AI, and Pindrop milestones cited in the thesis accurate? These competitive-landscape players were not covered by any surviving verified claim.",
+      "Can NeuralTrust's 'doubled ARR in Q1 2026' and Persona's '$200M Series D' specifics be independently verified? The funding rounds were confirmed but these adjacent growth/round details were not separately validated."
+    ],
+    "refuted": [
+      {
+        "claim": "Seven states credited ID.me with preventing more than $270 billion in unemployment fraud during the pandemic.",
+        "vote": "0-3",
+        "source": "https://network.id.me/press-releases/id-me-raises-340-million-to-combat-ai-driven-fraud-and-expand-secure-digital-identity/"
+      },
+      {
+        "claim": "No fine-tuning method achieved meaningful zero-shot generalization for deepfake detectors when tested across different (unseen) generative models, while in-domain (trained-on) generalization was strong.",
+        "vote": "1-2",
+        "source": "https://www.ischool.berkeley.edu/projects/2025/beyond-benchmark-generalization-limits-deepfake-detectors-wild"
+      }
+    ],
+    "sources": [
+      {
+        "url": "https://www.deloitte.com/us/en/insights/industry/financial-services/deepfake-banking-fraud-risk-on-the-rise.html",
+        "quality": "primary",
+        "angle": "primary-source statistics & fraud projections",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.realitydefender.com/insights/uk-government-deepfake-report",
+        "quality": "blog",
+        "angle": "primary-source statistics & fraud projections",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.globalgovernmentforum.com/uk-government-launches-deepfake-detection-initiative-as-urgent-national-priority/",
+        "quality": "secondary",
+        "angle": "primary-source statistics & fraud projections",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.frbservices.org/news/fed360/issues/051426/risk-management-2026-risk-officer-report",
+        "quality": "primary",
+        "angle": "primary-source statistics & fraud projections",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.biometricupdate.com/202406/deloitte-predicts-losses-of-up-to-40b-from-generative-ai-powered-fraud",
+        "quality": "secondary",
+        "angle": "primary-source statistics & fraud projections",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.pymnts.com/cybersecurity/fraud-prevention/2026/fed-report-puts-banks-on-alert-over-rising-fraud-threats",
+        "quality": "secondary",
+        "angle": "primary-source statistics & fraud projections",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.precedenceresearch.com/digital-identity-solutions-market",
+        "quality": "secondary",
+        "angle": "market-sizing report verification",
+        "claimCount": 2
+      },
+      {
+        "url": "https://www.snsinsider.com/reports/fake-image-detection-market-8488",
+        "quality": "secondary",
+        "angle": "market-sizing report verification",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.astuteanalytica.com/industry-report/fake-image-detection-market",
+        "quality": "secondary",
+        "angle": "market-sizing report verification",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.marketresearchfuture.com/reports/fake-image-detection-market-22192",
+        "quality": "secondary",
+        "angle": "market-sizing report verification",
+        "claimCount": 3
+      },
+      {
+        "url": "https://www.imarcgroup.com/identity-verification-market",
+        "quality": "secondary",
+        "angle": "market-sizing report verification",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.prnewswire.com/news-releases/neuraltrust-raises-20m-to-secure-the-growing-swarm-of-ai-agents-in-the-enterprise-302802926.html",
+        "quality": "secondary",
+        "angle": "company funding & milestone verification",
+        "claimCount": 5
+      },
+      {
+        "url": "https://withpersona.com/blog/series-d",
+        "quality": "unreliable",
+        "angle": "company funding & milestone verification",
+        "claimCount": 0
+      },
+      {
+        "url": "https://venturebeat.com/ai/75-million-deepfakes-blocked-persona-leads-the-corporate-fight-against-hiring-fraud",
+        "quality": "secondary",
+        "angle": "company funding & milestone verification",
+        "claimCount": 4
+      },
+      {
+        "url": "https://network.id.me/press-releases/id-me-raises-340-million-to-combat-ai-driven-fraud-and-expand-secure-digital-identity/",
+        "quality": "primary",
+        "angle": "company funding & milestone verification",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.regulationasia.com/articles/hkma-adds-deepfake-guidance-to-e-banking-rules",
+        "quality": "secondary",
+        "angle": "regulatory & policy catalysts",
+        "claimCount": 1
+      },
+      {
+        "url": "https://www.fatf-gafi.org/en/publications/Fatfgeneral/outcomes-FATF-plenary-october-2025.html",
+        "quality": "primary",
+        "angle": "regulatory & policy catalysts",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.gtlaw.com/en/insights/2026/6/deepfakes-chatbots-ai-generated-text-european-commission-details-transparency-obligations-under-the-ai-act",
+        "quality": "primary",
+        "angle": "regulatory & policy catalysts",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.multistate.us/insider/2026/2/12/how-ai-generated-content-laws-are-changing-across-the-country",
+        "quality": "secondary",
+        "angle": "regulatory & policy catalysts",
+        "claimCount": 5
+      },
+      {
+        "url": "https://my.idc.com/getdoc.jsp?containerId=US53703125",
+        "quality": "unreliable",
+        "angle": "competitive landscape & technical approaches",
+        "claimCount": 0
+      },
+      {
+        "url": "https://www.realitydefender.com/insights/lab-benchmarks-ineffective-in-deepfake-detection",
+        "quality": "blog",
+        "angle": "competitive landscape & technical approaches",
+        "claimCount": 5
+      },
+      {
+        "url": "https://arxiv.org/abs/2508.06248",
+        "quality": "primary",
+        "angle": "competitive landscape & technical approaches",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.mdpi.com/2076-3417/15/3/1225",
+        "quality": "primary",
+        "angle": "competitive landscape & technical approaches",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.securityweek.com/deepfakes-and-the-ai-battle-between-generation-and-detection/",
+        "quality": "secondary",
+        "angle": "competitive landscape & technical approaches",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.ischool.berkeley.edu/projects/2025/beyond-benchmark-generalization-limits-deepfake-detectors-wild",
+        "quality": "primary",
+        "angle": "competitive landscape & technical approaches",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.bvp.com/atlas/securing-ai-agents-the-defining-cybersecurity-challenge-of-2026",
+        "quality": "secondary",
+        "angle": "agentic security subsegment",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.aigl.blog/owasp-top-10-for-agentic-applications-2026/",
+        "quality": "secondary",
+        "angle": "agentic security subsegment",
+        "claimCount": 5
+      },
+      {
+        "url": "https://softwarestrategiesblog.com/2026/03/28/agentic-ai-security-startups-funding-mna-rsac-2026/",
+        "quality": "blog",
+        "angle": "agentic security subsegment",
+        "claimCount": 4
+      }
+    ],
+    "stats": {
+      "angles": 6,
+      "sourcesFetched": 28,
+      "claimsExtracted": 109,
+      "claimsVerified": 25,
+      "confirmed": 23,
+      "killed": 2,
+      "afterSynthesis": 12,
+      "urlDupes": 1,
+      "budgetDropped": 7,
+      "agentCalls": 111
+    }
+  }
+}

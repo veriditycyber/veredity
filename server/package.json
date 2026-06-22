@@ -1,0 +1,16 @@
+{
+  "name": "truehire-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "TrueHire backend — real deepfake detection via the Reality Defender API",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@realitydefender/realitydefender": "*",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "multer": "^2.2.0"
+  }
+}

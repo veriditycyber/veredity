@@ -1,0 +1,18 @@
+# Render deploy blueprint for the TrueHire pilot app.
+# Deploys the Node backend in /server, which also serves the /demo UI.
+# After connecting your repo, set the secret env vars in the Render dashboard.
+services:
+  - type: web
+    name: truehire
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: RD_API_KEY        # paste your Reality Defender key in the dashboard
+        sync: false
+      - key: ACCESS_CODE       # the pilot code you share with users
+        sync: false
+      - key: MAX_MONTHLY_SCANS
+        value: "45"

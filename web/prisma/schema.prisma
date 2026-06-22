@@ -1,0 +1,54 @@
+// TrueHire database schema.
+// MVP uses SQLite (a file — zero infra). To scale to Postgres later: change
+// provider to "postgresql", set DATABASE_URL to your Postgres/Neon URL, and run
+// `npx prisma db push`. All Prisma queries below are provider-agnostic.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  company      String?
+  createdAt    DateTime @default(now())
+  sessions     Session[]
+  checks       Check[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Check {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidateName String?
+  fileName      String
+  mediaType     String?
+  band          String?  // green | yellow | red
+  score         Int?     // 0..100 risk
+  rdStatus      String?  // Reality Defender status
+  engine        String?  // realitydefender | sample
+  signals       String?  // JSON-encoded Signal[]
+  status        String   @default("ANALYZING") // ANALYZING | DONE | ERROR
+  requestId     String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId, createdAt])
+}

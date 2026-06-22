@@ -1,0 +1,280 @@
+{
+  "summary": "Deep research harness — fan-out web searches, fetch sources, adversarially verify claims, synthesize a cited report.",
+  "agentCount": 105,
+  "logs": [
+    "Q: Deep research on the \"deepfake candidate / hiring & recruiting fraud\" detection …",
+    "Decomposed into 5 angles: problem prevalence / data, competitive landscape + pricing, detection APIs / build-vs-resell, buyer & go-to-market economics, regulation & failure risks (contrarian)",
+    "competitive landscape + pricing: 6 results",
+    "problem prevalence / data: 6 results",
+    "detection APIs / build-vs-resell: 6 results",
+    "detection APIs / build-vs-resell: 3 novel (3 filtered)",
+    "regulation & failure risks (contrarian): 6 results",
+    "regulation & failure risks (contrarian): 4 novel (2 filtered)",
+    "buyer & go-to-market economics: 6 results",
+    "buyer & go-to-market economics: 4 novel (2 filtered)",
+    "Fetched 23 sources → 103 claims → verifying top 25",
+    "\"Gartner predicts that by 2028, one in four (25%) c…\": 3-0 ✓",
+    "\"41% of IT, cybersecurity, risk, and fraud leaders …\": 3-0 ✓",
+    "\"In a 2Q25 Gartner survey of 3,000 job candidates, …\": 3-0 ✓",
+    "\"Experian predicts employers will unknowingly onboa…\": 3-0 ✓",
+    "\"Experian's 2026 Fraud Forecast names deepfake job …\": 3-0 ✓",
+    "\"88% of surveyed organizations encounter deepfake o…\": 2-1 ✓",
+    "\"Sumsub's deepfake/liveness verification is priced …\": 3-0 ✓",
+    "\"Sumsub offers deepfake detection via Web SDK, Mobi…\": 3-0 ✓",
+    "\"Reality Defender offers a free tier of its deepfak…\": 3-0 ✓",
+    "\"Sumsub positions its deepfake detection around KYC…\": 1-2 ✗",
+    "\"GetReal frames North Korean state actors as having…\": 3-0 ✓",
+    "\"GetReal Security sells a deepfake detection produc…\": 3-0 ✓",
+    "\"GetReal cites that 84% of recruiters have experien…\": 2-1 ✓",
+    "\"Sumsub's Basic plan costs $1.35 per verification w…\": 3-0 ✓",
+    "\"Amazon Rekognition Face Liveness is priced on a pe…\": 3-0 ✓",
+    "\"Amazon Rekognition Face Liveness detects spoofs in…\": 3-0 ✓",
+    "\"Sumsub's Compliance plan costs $1.85 per verificat…\": 3-0 ✓",
+    "\"Resemble AI offers a multimodal deepfake detection…\": 3-0 ✓",
+    "\"New York City passed a law effective 2023 requirin…\": 3-0 ✓",
+    "\"Third-party vendors offering biometric identity ve…\": 3-0 ✓",
+    "\"Illinois BIPA imposes liquidated statutory damages…\": 3-0 ✓",
+    "\"In a Resume Genius survey of 1,000 U.S. hiring man…\": 3-0 ✓",
+    "\"Gartner projects that by 2028, 1 in 4 (25%) of job…\": 3-0 ✓",
+    "\"In May 2024 the U.S. Justice Department alleged th…\": 3-0 ✓",
+    "\"North Korea has run a decade-long, wide-ranging op…\": 3-0 ✓",
+    "Verify done: 25 claims → 24 confirmed, 1 killed"
+  ],
+  "result": {
+    "question": "Deep research on the \"deepfake candidate / hiring & recruiting fraud\" detection wedge as a bootstrapped startup opportunity in 2026. Specifically: (1) The problem — how prevalent are deepfake/AI-impersonation candidates in remote job interviews, North Korean IT worker schemes, identity fraud in hiring? Cite data (Gartner, Persona, companies hit). (2) Competitors — who already sells deepfake/identity detection for hiring specifically? Cover Persona, identity verification vendors, interview-fraud-specific startups, background-check companies adding deepfake detection, and any RealityDefender/Pindrop hiring plays. List their pricing if public. (3) Detection APIs/engines a small team could integrate or resell — list available deepfake detection APIs, liveness/face-match APIs, voice-clone detection APIs, with pricing tiers and free tiers (e.g. Reality Defender API, Sensity, Hive, Sumsub, Persona, AWS Rekognition liveness, Microsoft, Resemble AI, Pindrop). (4) Buyer & go-to-market — who buys (HR, talent acquisition, security, trust & safety), what they currently pay for identity/background checks, typical deal sizes, sales cycle length, and whether self-serve/SMB entry is viable. (5) Pricing models that work for this category (per-check, per-seat, subscription). (6) Regulation around hiring identity verification (I-9, EEOC/bias concerns with AI in hiring, biometric consent laws like BIPA). (7) Risks and why startups in this space fail. Focus on what is realistic and defensible for a solo/bootstrapped founder, not a funded team.",
+    "summary": "The \"deepfake candidate / hiring-fraud detection\" wedge is a real and rapidly escalating problem in 2026, validated by tier-1 research (Gartner predicts 1 in 4 candidate profiles worldwide could be fake by 2028) and by U.S. law enforcement (DOJ's North Korean remote-IT-worker cases hitting 300+ companies). The detection-API supply chain a bootstrapped founder would need is mature and self-serve: per-check pricing is the proven model, with concrete, public price points (Sumsub from $1.35/verification, AWS Rekognition Face Liveness ~$0.01–0.015/check, Reality Defender free tier of 50 detections/month, Resemble AI multimodal detection), meaning a small team can integrate or resell rather than build. The competitive landscape already includes a dedicated, hiring-specific incumbent (GetReal Security), so the wedge is not greenfield. The dominant regulatory risk is biometric-privacy liability (Illinois BIPA: $1,000–$5,000 per violation, private right of action, vendors sued even without a direct relationship to data subjects) plus AI-hiring bias-audit/notice mandates (NYC Local Law 144). Most prevalence statistics originate from vendors with a commercial interest, so they should be cited as such, but the independent DOJ/Gartner anchors confirm the underlying problem is genuine.",
+    "findings": [
+      {
+        "claim": "The problem is real and escalating: Gartner predicts 1 in 4 (25%) candidate profiles worldwide could be fake by 2028, anchored to a 2Q25 survey of 3,000 candidates in which 6% admitted to interview impersonation fraud. Independent surveys corroborate (~17% of hiring managers report encountering deepfake video interviews per Resume Genius/1,000 managers), and identity vendors (Experian's 2026 Fraud Forecast) name deepfake job candidates as a top escalating threat.",
+        "confidence": "high",
+        "sources": [
+          "https://www.gartner.com/en/newsroom/press-releases/2025-07-31-gartner-survey-shows-just-26-percent-of-job-applicants-trust-ai-will-fairly-evaluate-them",
+          "https://www.cnbc.com/2025/07/11/how-deepfake-ai-job-applicants-are-stealing-remote-work.html",
+          "https://resumegenius.com/blog/job-hunting/ai-impact-on-hiring",
+          "https://www.experianplc.com/newsroom/press-releases/2026/experian-s-new-fraud-forecast-warns-agentic-ai--deepfake-job-can"
+        ],
+        "evidence": "Gartner 25%-by-2028 prediction confirmed across HR Dive, CNBC, Yahoo Finance, Personnel Today (claims [0],[20]); 6% self-reported interview fraud from 2Q25 Gartner survey ([1]); ~17% of 1,000 hiring managers encountered deepfakes in video interviews ([21]); Experian Jan 2026 forecast names deepfake candidates passing interviews in real time and predicts employers unknowingly onboarding fraudulent identities ([4],[5]).",
+        "vote": "3-0 (Gartner/DOJ/CNBC); Experian and Resume Genius are forward-looking/vendor-sponsored but accurately attributed"
+      },
+      {
+        "claim": "North Korean state-run IT-worker infiltration is the most concrete, independently-verified manifestation of hiring identity fraud: a decade-long operation placing fraudulent remote workers at U.S. companies to evade sanctions and fund WMD/missile programs. In May 2024 the DOJ alleged 300+ U.S. companies unknowingly hired North Korea-linked impostors using stolen American identities, generating at least $6.8M.",
+        "confidence": "high",
+        "sources": [
+          "https://www.nbcnews.com/investigations/north-korea-it-worker-scheme-nisos-fbi-rcna245025",
+          "https://www.cnbc.com/2025/07/11/how-deepfake-ai-job-applicants-are-stealing-remote-work.html"
+        ],
+        "evidence": "DOJ May 16 2024 release: 300+ companies defrauded, $6.8M revenue, 60+ compromised identities ([22]); NBC/DOJ/Treasury confirm decade-long scheme funding sanctions evasion and WMD/ballistic missile programs, data theft from Fortune 500 and a defense company ([23]). This is government-sourced, not vendor-sourced.",
+        "vote": "3-0, backed by DOJ/FBI/Treasury primary sources"
+      },
+      {
+        "claim": "A hiring-specific competitor already exists: GetReal Security sells a staffing/recruiting deepfake-detection product offering continuous real-time identity verification across face and voice during live interviews, integrating with existing video interviewing, ATS, and assessment tools, and flags North Korea-linked persona networks via threat intelligence. This means the wedge is not greenfield, and a bootstrapped entrant must differentiate.",
+        "confidence": "high",
+        "sources": [
+          "https://www.getrealsecurity.com/solutions/staffing-recruiting",
+          "https://www.prnewswire.com/news-releases/getreal-security-advances-continuous-identity-protection-to-combat-deepfakes-302551665.html",
+          "https://www.prnewswire.com/news-releases/new-getreal-security-research-41-of-enterprises-surveyed-report-having-hired-and-onboarded-fraudulent-candidates-302638982.html"
+        ],
+        "evidence": "GetReal product page: continuous face+voice verification, ATS/video-interview integration, NK-network threat intel ([9],[11]); GetReal vendor surveys (41% of enterprises hired a fraudulent candidate; 88% encounter deepfake/impersonation attacks) used as marketing demand-gen ([2],[3]); cites 84% of recruiters experienced some form of candidate fraud (Gartner/HR Executive) ([10]).",
+        "vote": "3-0 on product existence/positioning; demand statistics are vendor self-surveys and should be cited as such"
+      },
+      {
+        "claim": "The detection supply chain is mature and self-serve, so a small team can integrate or resell rather than build a detection engine. Multiple vendors expose REST APIs/SDKs with public, usage-based pricing and free tiers: Sumsub (deepfake/liveness via Web SDK, Mobile SDK, RESTful API), Reality Defender (public API with a free tier of 50 detections/month, ~2 lines of code), AWS Rekognition Face Liveness (per-check API detecting presentation, bypass/injection-deepfake, and 3D mask attacks), and Resemble AI (multimodal document+selfie+voice detection in a single call).",
+        "confidence": "high",
+        "sources": [
+          "https://sumsub.com/deepfake-detection/",
+          "https://www.realitydefender.com/insights/reality-defender-launches-free-access-to-deepfake-detection-api",
+          "https://aws.amazon.com/rekognition/face-liveness/",
+          "https://www.resemble.ai/solutions/identity-verification-and-kyc"
+        ],
+        "evidence": "Sumsub Web/Mobile SDK + REST API ([7]); Reality Defender free tier 50/month, 2 lines of code ([8]); AWS Face Liveness detects printed photos, injected/synthetic/deepfake bypass videos, silicone/latex 3D masks ([12]); Resemble AI single-call multimodal detection of synthetic TTS, real-time webcam face-swap, AI-generated IDs ([16]).",
+        "vote": "3-0 across all four vendor primary sources"
+      },
+      {
+        "claim": "Per-check (usage-based) pricing is the proven, dominant model for this category, viable for SMB/self-serve entry. Public price points: Sumsub Basic $1.35/verification ($149/mo minimum, includes ID Verification + Liveness & Face Match), Sumsub Compliance $1.85/verification ($299/mo minimum, adds AML screening/monitoring + proof of address); AWS Rekognition Face Liveness ~$0.015/check (first 500K), tiering down to $0.010.",
+        "confidence": "high",
+        "sources": [
+          "https://sumsub.com/pricing/",
+          "https://sumsub.com/deepfake-detection/",
+          "https://aws.amazon.com/rekognition/face-liveness/"
+        ],
+        "evidence": "Sumsub pricing page confirms Basic $1.35/$149-min and Compliance $1.85/$299-min with feature breakdown ([6],[14],[15]); AWS Face Liveness explicitly 'priced on a per check basis' with tiered per-check rates ([13]). Both demonstrate per-check entry is viable with low/no minimums (AWS) or modest minimums (Sumsub).",
+        "vote": "3-0 across vendor primary pricing pages; SaaS pricing is time-sensitive and may change"
+      },
+      {
+        "claim": "Biometric-privacy regulation is the dominant legal/financial risk, not a peripheral concern. Illinois BIPA imposes liquidated damages of $1,000 per negligent and $5,000 per intentional/reckless violation with a private right of action for anyone 'aggrieved' (no actual harm required). Critically, third-party identity-verification vendors are increasingly targeted by BIPA class actions even without a direct relationship to the data subjects (Mahmood v. Berbix). Separately, AI-hiring bias laws apply (NYC Local Law 144, effective 2023: independent disparate-impact bias audit on race/sex/ethnicity plus pre-use applicant notice).",
+        "confidence": "high",
+        "sources": [
+          "https://www.lexisnexis.com/pdf/practical-guidance/ai/biometric-privacy-and-ai-legal-dev.pdf"
+        ],
+        "evidence": "BIPA $1,000/$5,000 per-violation liquidated damages + private right of action, confirmed against 740 ILCS 14/20 and Rosenbach/Cothron caselaw ([17]); Mahmood v. Berbix shows IDV vendors sued without direct relationship to data subjects ([18]); NYC LL144 bias-audit and notice mandate ([19]). For a bootstrapped founder reselling biometric detection, BIPA per-violation exposure plus vendor-liability precedent is an existential risk requiring consent flows and possibly avoiding/limiting Illinois deployments.",
+        "vote": "3-0, backed by primary statute and state supreme court caselaw"
+      }
+    ],
+    "caveats": "Vendor-survey bias: Many prevalence/demand statistics (GetReal's 41% hired a fraudulent candidate, 88% encounter deepfake/impersonation attacks, 84% recruiters experienced candidate fraud; Experian's forecast; Resume Genius's 17%) come from companies that sell detection or identity services, so they are commercially self-interested and several bundle broad categories (e.g., 'deepfake OR impersonation' includes ordinary phishing/BEC; '84% candidate fraud' covers any falsification, not specifically deepfakes). They should be cited as vendor/sponsored survey findings, not independent measurement. The independent anchors are Gartner (forecast, phrased 'could be fake') and DOJ (measured enforcement). Time-sensitivity: SaaS pricing (Sumsub, AWS, Reality Defender free tier) changes frequently and should be re-checked before any business plan; the Reality Defender free tier currently covers audio/image with video pending. BIPA's 2024 SB 2979 amendment limited per-violation accrual but left the $1,000/$5,000 amounts and private right of action intact. The 'resell' (white-label) path for Sumsub/AWS is not explicitly offered on product pages and would need a separate reseller/partner agreement; only 'integrate' is confirmed. One claim was refuted: the assertion that Sumsub does NOT target hiring — incumbents are in fact expanding toward this wedge, reinforcing competitive risk.",
+    "openQuestions": [
+      "What are actual enterprise deal sizes, sales-cycle lengths, and buyer org (HR vs. security vs. trust-and-safety) for hiring-fraud detection specifically — the verified claims confirm per-check pricing viability but did not surface concrete ACVs, win rates, or whether HR or CISO budgets fund these purchases?",
+      "What detection accuracy / false-positive rates do the integrable APIs (Reality Defender, Sumsub, AWS Liveness, Resemble) achieve on real-time injected deepfakes in live interviews, and is reselling a third-party engine defensible versus GetReal's purpose-built continuous-verification approach?",
+      "Beyond BIPA and NYC LL144, what is the full multi-state biometric-consent and AI-hiring-audit compliance burden (Texas CUBI, Washington, Colorado AI Act, EEOC guidance) and how does it constrain a solo founder's ability to operate nationally?",
+      "What is the realistic moat/defensibility for a bootstrapped solo founder given that detection is a reused API commodity and a funded incumbent (GetReal) plus IDV giants (Sumsub, Persona, Experian) already address the space — is the wedge a workflow/integration play (ATS-native) rather than a detection-tech play?"
+    ],
+    "refuted": [
+      {
+        "claim": "Sumsub positions its deepfake detection around KYC, onboarding, and transaction verification rather than hiring, indicating identity-verification incumbents do not specifically target the hiring/recruiting-fraud wedge.",
+        "vote": "1-2",
+        "source": "https://sumsub.com/deepfake-detection/"
+      }
+    ],
+    "sources": [
+      {
+        "url": "https://www.gartner.com/en/newsroom/press-releases/2025-07-31-gartner-survey-shows-just-26-percent-of-job-applicants-trust-ai-will-fairly-evaluate-them",
+        "quality": "primary",
+        "angle": "problem prevalence / data",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.prnewswire.com/news-releases/new-getreal-security-research-41-of-enterprises-surveyed-report-having-hired-and-onboarded-fraudulent-candidates-302638982.html",
+        "quality": "primary",
+        "angle": "problem prevalence / data",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.cnbc.com/2025/07/11/how-deepfake-ai-job-applicants-are-stealing-remote-work.html",
+        "quality": "secondary",
+        "angle": "problem prevalence / data",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.nbcnews.com/investigations/north-korea-it-worker-scheme-nisos-fbi-rcna245025",
+        "quality": "secondary",
+        "angle": "problem prevalence / data",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.experianplc.com/newsroom/press-releases/2026/experian-s-new-fraud-forecast-warns-agentic-ai--deepfake-job-can",
+        "quality": "primary",
+        "angle": "problem prevalence / data",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.morningstar.com/news/pr-newswire/20251211da44134/new-getreal-security-research-41-of-enterprises-surveyed-report-having-hired-and-onboarded-fraudulent-candidates",
+        "quality": "secondary",
+        "angle": "problem prevalence / data",
+        "claimCount": 5
+      },
+      {
+        "url": "https://venturebeat.com/ai/75-million-deepfakes-blocked-persona-leads-the-corporate-fight-against-hiring-fraud",
+        "quality": "secondary",
+        "angle": "competitive landscape + pricing",
+        "claimCount": 5
+      },
+      {
+        "url": "https://withpersona.com/solutions/candidate-verification",
+        "quality": "unreliable",
+        "angle": "competitive landscape + pricing",
+        "claimCount": 0
+      },
+      {
+        "url": "https://sumsub.com/deepfake-detection/",
+        "quality": "primary",
+        "angle": "competitive landscape + pricing",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.realitydefender.com/insights/reality-defender-launches-free-access-to-deepfake-detection-api",
+        "quality": "primary",
+        "angle": "competitive landscape + pricing",
+        "claimCount": 4
+      },
+      {
+        "url": "https://galadon.com/checkr-background-check-services",
+        "quality": "secondary",
+        "angle": "competitive landscape + pricing",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.getrealsecurity.com/solutions/staffing-recruiting",
+        "quality": "primary",
+        "angle": "competitive landscape + pricing",
+        "claimCount": 5
+      },
+      {
+        "url": "https://aws.amazon.com/rekognition/face-liveness/",
+        "quality": "primary",
+        "angle": "detection APIs / build-vs-resell",
+        "claimCount": 4
+      },
+      {
+        "url": "https://sumsub.com/pricing/",
+        "quality": "primary",
+        "angle": "detection APIs / build-vs-resell",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.resemble.ai/solutions/identity-verification-and-kyc",
+        "quality": "primary",
+        "angle": "detection APIs / build-vs-resell",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.growthspreeofficial.com/blogs/b2b-saas-sales-cycle-length-benchmarks-2026-by-acv-vertical",
+        "quality": "blog",
+        "angle": "buyer & go-to-market economics",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.backgroundchecks.com/news/background-check-pricing",
+        "quality": "blog",
+        "angle": "buyer & go-to-market economics",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.phenom.com/blog/candidate-fraud-prevention-chro",
+        "quality": "blog",
+        "angle": "buyer & go-to-market economics",
+        "claimCount": 4
+      },
+      {
+        "url": "https://www.getrealsecurity.com/resources/a-guide-for-cisos-and-cios-how-to-plan-your-budget-for-deepfake-ai-detection-in-2026",
+        "quality": "blog",
+        "angle": "buyer & go-to-market economics",
+        "claimCount": 5
+      },
+      {
+        "url": "https://natlawreview.com/article/your-next-data-breach-may-start-job-interview-deepfake-candidate-problem",
+        "quality": "secondary",
+        "angle": "regulation & failure risks (contrarian)",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.crowell.com/en/insights/client-alerts/from-deepfakes-to-sanctions-violations-the-rise-of-north-korean-remote-it-worker-schemes",
+        "quality": "secondary",
+        "angle": "regulation & failure risks (contrarian)",
+        "claimCount": 5
+      },
+      {
+        "url": "https://perkinscoie.com/insights/article/growing-regulation-ai-based-employment-decision-tools",
+        "quality": "secondary",
+        "angle": "regulation & failure risks (contrarian)",
+        "claimCount": 5
+      },
+      {
+        "url": "https://www.lexisnexis.com/pdf/practical-guidance/ai/biometric-privacy-and-ai-legal-dev.pdf",
+        "quality": "primary",
+        "angle": "regulation & failure risks (contrarian)",
+        "claimCount": 5
+      }
+    ],
+    "stats": {
+      "angles": 5,
+      "sourcesFetched": 23,
+      "claimsExtracted": 103,
+      "claimsVerified": 25,
+      "confirmed": 24,
+      "killed": 1,
+      "afterSynthesis": 6,
+      "urlDupes": 2,
+      "budgetDropped": 5,
+      "agentCalls": 105
+    }
+  }
+}
