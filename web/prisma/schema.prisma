@@ -1,4 +1,4 @@
-// TrueHire database schema.
+// Veridity database schema.
 // MVP uses SQLite (a file — zero infra). To scale to Postgres later: change
 // provider to "postgresql", set DATABASE_URL to your Postgres/Neon URL, and run
 // `npx prisma db push`. All Prisma queries below are provider-agnostic.

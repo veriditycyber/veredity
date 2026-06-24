@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Shield, Lock, Check } from "@/components/icons";
+import { Logo } from "@/components/Logo";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function SignupPage() {
 
   return (
     <div className="auth-card">
-      <div className="logo"><span className="mark"><Shield style={{ stroke: "#04111f" }} /></span> <span>TrueHire<small>Hiring Trust Layer</small></span></div>
+      <Logo sub="TrueHire" />
       <div className="auth-title">Create your account</div>
       <div className="auth-sub">Start verifying candidates against deepfake & impersonation fraud.</div>
       <form onSubmit={submit}>

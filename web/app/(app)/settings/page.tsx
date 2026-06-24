@@ -46,12 +46,12 @@ export default async function SettingsPage() {
         <div className="card">
           <p className="section-title">Security &amp; compliance</p>
           <p className="muted" style={{ fontSize: 14, margin: "0 0 14px" }}>
-            How TrueHire handles your data.
+            How Veridity handles your data.
           </p>
           <div className="row-gap">
             <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}><span className="sig-ok"><Lock /></span><span style={{ fontSize: 14 }}>Sessions are encrypted; passwords are hashed with bcrypt.</span></div>
             <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}><span className="sig-ok"><Shield /></span><span style={{ fontSize: 14 }}>Uploaded media is sent to the detection engine and deleted immediately — never stored at rest.</span></div>
-            <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}><span className="sig-ok"><Check /></span><span style={{ fontSize: 14 }}>Consent is required before every biometric check (BIPA-aligned). TrueHire is a fraud signal, not an automated hiring decision.</span></div>
+            <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}><span className="sig-ok"><Check /></span><span style={{ fontSize: 14 }}>Consent is required before every biometric check (BIPA-aligned). Veridity is a fraud signal, not an automated hiring decision.</span></div>
           </div>
         </div>
       </div>

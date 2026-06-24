@@ -1,4 +1,4 @@
-# TrueHire — Web App (Next.js + Database)
+# Veridity — Web App (Next.js + Database)
 
 The product MVP. Replaces the earlier `../server` + `../demo` prototype (safe to delete once you're happy with this).
 

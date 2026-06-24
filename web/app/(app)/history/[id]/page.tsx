@@ -6,6 +6,7 @@ import { BAND_TITLE, BAND_REC, type Band, type Sig, type Verdict } from "@/lib/t
 import Topbar from "@/components/Topbar";
 import VerdictCard from "@/components/VerdictCard";
 import PrintButton from "@/components/PrintButton";
+import { LogoMark } from "@/components/Logo";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +36,7 @@ export default async function CheckDetail({ params }: { params: Promise<{ id: st
       <div className="content">
         <div className="card">
           <div className="report-head" style={{ marginBottom: 14 }}>
-            <div className="logo" style={{ fontSize: 16 }}>TrueHire — Candidate Verification Report</div>
+            <div className="logo" style={{ fontSize: 16 }}><LogoMark size={22} /> Veridity — Candidate Verification Report</div>
           </div>
           <VerdictCard
             verdict={verdict}
