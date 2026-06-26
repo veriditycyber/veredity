@@ -5,20 +5,39 @@ import { monthlyCheckCount } from "@/lib/usage";
 import { MAX_MONTHLY_SCANS } from "@/lib/rd";
 import Topbar from "@/components/Topbar";
 import { BandBadge } from "@/components/Badge";
+import { ActivityChart, RiskDonut } from "@/components/Charts";
 import { Scan, Shield, Alert, Inbox } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
 export default async function Dashboard() {
   const user = (await getCurrentUser())!;
-  const [total, red, yellow, monthUsed, recent] = await Promise.all([
+  const since = new Date();
+  since.setHours(0, 0, 0, 0);
+  since.setDate(since.getDate() - 13);
+
+  const [total, green, yellow, red, monthUsed, recent, last14] = await Promise.all([
     prisma.check.count({ where: { userId: user.id } }),
-    prisma.check.count({ where: { userId: user.id, band: "red" } }),
+    prisma.check.count({ where: { userId: user.id, band: "green" } }),
     prisma.check.count({ where: { userId: user.id, band: "yellow" } }),
+    prisma.check.count({ where: { userId: user.id, band: "red" } }),
     monthlyCheckCount(),
     prisma.check.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 6 }),
+    prisma.check.findMany({ where: { userId: user.id, createdAt: { gte: since } }, select: { createdAt: true, band: true } }),
   ]);
   const scansLeft = Math.max(0, MAX_MONTHLY_SCANS - monthUsed);
+
+  // 14-day activity buckets
+  const days = Array.from({ length: 14 }, (_, i) => {
+    const d = new Date(since);
+    d.setDate(since.getDate() + i);
+    return { t: d.getTime(), label: d.toLocaleDateString(undefined, { day: "numeric" }), count: 0, flagged: 0 };
+  });
+  for (const c of last14) {
+    const d = new Date(c.createdAt); d.setHours(0, 0, 0, 0);
+    const b = days.find((x) => x.t === d.getTime());
+    if (b) { b.count++; if (c.band === "red") b.flagged++; }
+  }
 
   return (
     <>
@@ -34,32 +53,28 @@ export default async function Dashboard() {
         </div>
 
         <div className="grid-stats">
-          <div className="stat brand">
-            <div className="l"><Inbox /> Total checks</div>
-            <div className="n">{total}</div>
-            <div className="s">All-time candidate scans</div>
+          <div className="stat"><div className="l"><Inbox /> Total checks</div><div className="n">{total}</div><div className="s">All-time candidate scans</div></div>
+          <div className="stat red"><div className="l"><Alert /> High risk</div><div className="n">{red}</div><div className="s">Flagged likely deepfake</div></div>
+          <div className="stat"><div className="l"><Shield /> Needs review</div><div className="n">{yellow}</div><div className="s">Inconclusive verdicts</div></div>
+          <div className="stat"><div className="l"><Scan /> Scans left</div><div className="n">{scansLeft}</div><div className="s">This month · resets monthly</div></div>
+        </div>
+
+        <div className="dash-2col">
+          <div className="card">
+            <p className="section-title" style={{ margin: "0 0 12px" }}>Activity · last 14 days</p>
+            <ActivityChart data={days.map(({ label, count, flagged }) => ({ label, count, flagged }))} />
+            <p className="hint" style={{ marginTop: 10 }}>Bars show checks per day · <span style={{ color: "var(--danger)" }}>red</span> = high-risk flags.</p>
           </div>
-          <div className="stat red">
-            <div className="l"><Alert /> High risk</div>
-            <div className="n">{red}</div>
-            <div className="s">Flagged likely deepfake</div>
-          </div>
-          <div className="stat">
-            <div className="l"><Shield /> Needs review</div>
-            <div className="n">{yellow}</div>
-            <div className="s">Inconclusive verdicts</div>
-          </div>
-          <div className="stat green">
-            <div className="l"><Scan /> Scans left</div>
-            <div className="n">{scansLeft}</div>
-            <div className="s">This month · resets monthly</div>
+          <div className="card">
+            <p className="section-title" style={{ margin: "0 0 12px" }}>Risk breakdown</p>
+            <RiskDonut green={green} yellow={yellow} red={red} />
           </div>
         </div>
 
-        <div className="card">
+        <div className="card" style={{ marginTop: 16 }}>
           <div className="flex-between" style={{ marginBottom: 6 }}>
             <p className="section-title" style={{ margin: 0 }}>Recent checks</p>
-            <Link className="hint" href="/history" style={{ color: "var(--brand)" }}>View all →</Link>
+            <Link className="hint" href="/history" style={{ color: "var(--text)" }}>View all →</Link>
           </div>
           {recent.length === 0 ? (
             <div className="empty">

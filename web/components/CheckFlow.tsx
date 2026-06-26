@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { Band, Verdict } from "@/lib/types";
 import VerdictCard from "./VerdictCard";
-import { Person, Audio } from "./icons";
+import { Person, Audio, Camera } from "./icons";
 
 const STEPS = [
   "Uploading media securely…",
@@ -80,9 +80,45 @@ export default function CheckFlow({ initialScansLeft }: { initialScansLeft: numb
   const [drag, setDrag] = useState(false);
   const [live, setLive] = useState(false);
   const [scansLeft, setScansLeft] = useState<number>(initialScansLeft);
+  const [cam, setCam] = useState(false);
+  const [camErr, setCamErr] = useState("");
 
   const fileInput = useRef<HTMLInputElement>(null);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  function stopCam() {
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    setCam(false);
+  }
+  async function openCam() {
+    setCamErr("");
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+      streamRef.current = stream;
+      setCam(true);
+      setSelected(null);
+      setTimeout(() => { if (videoRef.current) { videoRef.current.srcObject = stream; videoRef.current.play().catch(() => {}); } }, 50);
+    } catch {
+      setCamErr("Camera access denied or unavailable. Allow camera permission and try again.");
+    }
+  }
+  function capture() {
+    const v = videoRef.current;
+    if (!v) return;
+    const c = document.createElement("canvas");
+    c.width = v.videoWidth || 640; c.height = v.videoHeight || 480;
+    c.getContext("2d")?.drawImage(v, 0, 0, c.width, c.height);
+    c.toBlob((blob) => {
+      if (!blob) return;
+      const f = new File([blob], `capture-${Date.now()}.jpg`, { type: "image/jpeg" });
+      setFile(f); setFileLabel("Camera capture"); setSelected(null);
+      stopCam();
+    }, "image/jpeg", 0.92);
+  }
+  useEffect(() => () => stopCam(), []);
 
   useEffect(() => {
     (async () => {
@@ -207,6 +243,19 @@ export default function CheckFlow({ initialScansLeft }: { initialScansLeft: numb
         <input ref={fileInput} type="file" accept="image/*,video/*,audio/*" hidden
           onChange={(e) => { const f = e.target.files?.[0]; if (f) { setFile(f); setSelected(null); setFileLabel(f.name); } }} />
       </div>
+
+      {!cam ? (
+        <button className="btn btn-ghost cam-btn" type="button" onClick={openCam}><Camera /> Capture live from camera</button>
+      ) : (
+        <div className="cam-panel">
+          <video ref={videoRef} playsInline muted className="cam-video" />
+          <div className="cam-actions">
+            <button className="btn btn-primary" type="button" onClick={capture}>Capture frame</button>
+            <button className="btn btn-ghost" type="button" onClick={stopCam}>Cancel</button>
+          </div>
+        </div>
+      )}
+      {camErr && <p className="err" style={{ marginTop: 8 }}>{camErr}</p>}
 
       <input className="cand" type="text" value={candidate} placeholder="Candidate name (optional — appears on the report)"
         onChange={(e) => setCandidate(e.target.value)} />
