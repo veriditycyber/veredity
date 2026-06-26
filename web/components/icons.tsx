@@ -62,3 +62,12 @@ export const Camera = (p: SVGProps<SVGSVGElement>) => (
 export const Send = (p: SVGProps<SVGSVGElement>) => (
   <svg {...base(p)}><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4z" /></svg>
 );
+export const Sparkle = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}><path d="M12 3l1.8 4.7L18.5 9.5 13.8 11.3 12 16l-1.8-4.7L5.5 9.5l4.7-1.8z" /><path d="M19 15l.7 1.8L21.5 17.5l-1.8.7L19 20l-.7-1.8L16.5 17.5l1.8-.7z" /></svg>
+);
+export const Card = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></svg>
+);
+export const Chevron = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}><path d="m6 9 6 6 6-6" /></svg>
+);

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { monthlyCheckCount } from "@/lib/usage";
-import { MAX_MONTHLY_SCANS } from "@/lib/rd";
+import { effectiveScanLimit } from "@/lib/plans";
 import Topbar from "@/components/Topbar";
 import { BandBadge } from "@/components/Badge";
 import { ActivityChart, RiskDonut } from "@/components/Charts";
@@ -25,7 +25,7 @@ export default async function Dashboard() {
     prisma.check.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 6 }),
     prisma.check.findMany({ where: { userId: user.id, createdAt: { gte: since } }, select: { createdAt: true, band: true } }),
   ]);
-  const scansLeft = Math.max(0, MAX_MONTHLY_SCANS - monthUsed);
+  const scansLeft = Math.max(0, effectiveScanLimit(user.plan) - monthUsed);
 
   // 14-day activity buckets
   const days = Array.from({ length: 14 }, (_, i) => {

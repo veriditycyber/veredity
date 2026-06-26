@@ -1,7 +1,8 @@
+import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { monthlyCheckCount } from "@/lib/usage";
-import { MAX_MONTHLY_SCANS } from "@/lib/rd";
+import { PLANS, planOf, effectiveScanLimit } from "@/lib/plans";
 import Topbar from "@/components/Topbar";
 import LogoutButton from "@/components/LogoutButton";
 import { Lock, Shield, Check } from "@/components/icons";
@@ -37,10 +38,15 @@ export default async function SettingsPage() {
         </div>
 
         <div className="card">
-          <p className="section-title">Usage</p>
+          <div className="flex-between" style={{ marginBottom: 4 }}>
+            <p className="section-title" style={{ margin: 0 }}>Plan &amp; usage</p>
+            <Link className="hint" href="/billing" style={{ color: "var(--text)" }}>Manage →</Link>
+          </div>
+          <Row k="Plan" v={PLANS[planOf(user.plan)].name} />
           <Row k="Total checks run" v={String(total)} />
-          <Row k="Scans used this month" v={`${monthUsed} / ${MAX_MONTHLY_SCANS}`} />
+          <Row k="Checks this month" v={`${monthUsed} / ${effectiveScanLimit(user.plan)}`} />
           <Row k="Detection engine" v="Reality Defender" />
+          <Row k="Interview AI" v="Claude" />
         </div>
 
         <div className="card">

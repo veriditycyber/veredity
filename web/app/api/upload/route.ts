@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { API_KEY, MAX_MONTHLY_SCANS, rdClient, saveTemp, unlinkQuiet } from "@/lib/rd";
+import { API_KEY, rdClient, saveTemp, unlinkQuiet } from "@/lib/rd";
 import { getCurrentUser } from "@/lib/auth";
 import { monthlyCheckCount } from "@/lib/usage";
+import { effectiveScanLimit } from "@/lib/plans";
 import { prisma } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -15,8 +16,8 @@ export async function POST(req: Request) {
   if (!API_KEY) return NextResponse.json({ error: "no_api_key", message: "Detection is not configured on the server." }, { status: 503 });
 
   const used = await monthlyCheckCount();
-  if (used >= MAX_MONTHLY_SCANS) {
-    return NextResponse.json({ error: "quota", message: "Monthly scan limit reached. Resets next month, or upgrade the Reality Defender plan." }, { status: 429 });
+  if (used >= effectiveScanLimit(user.plan)) {
+    return NextResponse.json({ error: "quota", message: "Monthly scan limit reached for your plan. Upgrade in Billing, or it resets next month." }, { status: 429 });
   }
 
   const form = await req.formData();

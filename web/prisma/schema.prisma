@@ -18,10 +18,31 @@ model User {
   passwordHash String
   name         String?
   company      String?
+  plan         String   @default("free") // free | pro | business
   createdAt    DateTime @default(now())
   sessions     Session[]
   checks       Check[]
   links        VerificationLink[]
+  interviews   Interview[]
+}
+
+model Interview {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidateName  String?
+  role           String?
+  transcript     String   // raw interview transcript / notes
+  summary        String?
+  strengths      String?  // JSON array
+  concerns       String?  // JSON array
+  questions      String?  // JSON array (suggested follow-ups)
+  recommendation String?  // Strong Yes | Yes | Maybe | No
+  fitScore       Int?     // 0-100
+  model          String?
+  createdAt      DateTime @default(now())
+
+  @@index([userId, createdAt])
 }
 
 model VerificationLink {

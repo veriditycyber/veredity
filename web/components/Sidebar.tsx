@@ -2,14 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Grid, Scan, Send, Clock, Gear } from "./icons";
-import { Logo } from "./Logo";
+import { Grid, Scan, Send, Sparkle, Clock, Card, Gear } from "./icons";
+import ProductHeader from "./ProductHeader";
 
 const NAV = [
   { href: "/dashboard", label: "Dashboard", Icon: Grid },
   { href: "/check", label: "New Check", Icon: Scan },
+  { href: "/interviews", label: "Interview AI", Icon: Sparkle },
   { href: "/links", label: "Verify Links", Icon: Send },
   { href: "/history", label: "History", Icon: Clock },
+  { href: "/billing", label: "Billing", Icon: Card },
   { href: "/settings", label: "Settings", Icon: Gear },
 ];
 
@@ -18,7 +20,7 @@ export default function Sidebar({ name, company }: { name: string; company: stri
   const initial = (name || "U").trim().charAt(0).toUpperCase();
   return (
     <aside className="sidebar">
-      <Logo size={32} sub="TrueHire" />
+      <ProductHeader />
       <nav className="nav">
         {NAV.map(({ href, label, Icon }) => {
           const active = path === href || path.startsWith(href + "/");
