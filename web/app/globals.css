@@ -180,6 +180,17 @@ h1,h2,h3,.logo-words,.hero h1,.lp-section .head h2,.cta-band h2,.auth-title{font
 .cam-panel{margin-top:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
 .cam-video{width:100%;max-height:340px;display:block;object-fit:cover;background:#000;transform:scaleX(-1)}
 .cam-actions{display:flex;gap:10px;padding:12px;background:var(--panel2);border-top:1px solid var(--line)}
+
+/* candidate self-verify (public page) */
+.verify-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(900px 500px at 50% -10%, var(--glow), transparent 60%), var(--bg)}
+.verify-card{width:100%;max-width:460px;background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+  border-radius:20px;padding:34px;box-shadow:var(--shadow),inset 0 1px 0 var(--hi)}
+.verify-card h2{margin:0 0 6px;font-size:24px;letter-spacing:-.02em}
+.verify-card p{font-size:14px;line-height:1.55;margin:0 0 4px}
+.v-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.v-checkmark{width:64px;height:64px;border-radius:50%;background:var(--text);color:var(--bg);display:grid;place-items:center;margin:0 auto 16px}
+.v-checkmark svg{width:30px;height:30px;stroke-width:2.6}
 .consent{display:flex;gap:10px;align-items:flex-start;margin:18px 0 16px;font-size:13px;color:var(--muted)}
 .consent input{margin-top:3px;width:16px;height:16px;accent-color:var(--text)}
 .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}

@@ -21,6 +21,20 @@ model User {
   createdAt    DateTime @default(now())
   sessions     Session[]
   checks       Check[]
+  links        VerificationLink[]
+}
+
+model VerificationLink {
+  id            String   @id @default(cuid())
+  token         String   @unique
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidateName String?
+  status        String   @default("pending") // pending | done
+  checkId       String?
+  createdAt     DateTime @default(now())
+
+  @@index([userId, createdAt])
 }
 
 model Session {

@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Grid, Scan, Clock, Gear } from "./icons";
+import { Grid, Scan, Send, Clock, Gear } from "./icons";
 import { Logo } from "./Logo";
 
 const NAV = [
   { href: "/dashboard", label: "Dashboard", Icon: Grid },
   { href: "/check", label: "New Check", Icon: Scan },
+  { href: "/links", label: "Verify Links", Icon: Send },
   { href: "/history", label: "History", Icon: Clock },
   { href: "/settings", label: "Settings", Icon: Gear },
 ];

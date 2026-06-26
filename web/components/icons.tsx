@@ -59,3 +59,6 @@ export const Moon = (p: SVGProps<SVGSVGElement>) => (
 export const Camera = (p: SVGProps<SVGSVGElement>) => (
   <svg {...base(p)}><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" /></svg>
 );
+export const Send = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}><path d="M22 2 11 13" /><path d="M22 2 15 22l-4-9-9-4z" /></svg>
+);

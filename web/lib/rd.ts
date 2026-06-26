@@ -61,3 +61,17 @@ export function mapResult(rd: any, filename: string): Verdict {
     signals, rec: recMap[band], engine: "realitydefender",
   } as Verdict & { engine: string };
 }
+
+// Upload to Reality Defender and poll until the top-level verdict settles (or times out).
+// Used by the candidate self-verification flow, which detects synchronously.
+export async function detectSettled(filePath: string, filename: string): Promise<{ verdict: Verdict; rdStatus: string }> {
+  const rd = rdClient();
+  const { requestId } = await rd.upload({ filePath });
+  let result: any = await rd.getResult(requestId);
+  const deadline = Date.now() + 45000;
+  while (Date.now() < deadline && (!result.status || result.status === "ANALYZING")) {
+    await new Promise((r) => setTimeout(r, 3000));
+    result = await rd.getResult(requestId);
+  }
+  return { verdict: mapResult(result, filename), rdStatus: result.status };
+}
