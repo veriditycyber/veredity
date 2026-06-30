@@ -241,6 +241,9 @@ h1,h2,h3,.logo-words,.hero h1,.lp-section .head h2,.cta-band h2,.auth-title{font
 .ph-item span b{font-size:13px;display:block}
 .ph-item span small{font-size:11px;color:var(--muted)}
 .ph-item.dim{opacity:.5}
+.ph-item.link{cursor:pointer;color:inherit;text-decoration:none}
+.ph-item.link:hover{background:var(--panelhi)}
+.ph-dot{display:block;width:6px;height:6px;border-radius:50%;background:var(--dim);margin:auto}
 .consent{display:flex;gap:10px;align-items:flex-start;margin:18px 0 16px;font-size:13px;color:var(--muted)}
 .consent input{margin-top:3px;width:16px;height:16px;accent-color:var(--text)}
 .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -478,3 +481,114 @@ h1,h2,h3,.logo-words,.hero h1,.lp-section .head h2,.cta-band h2,.auth-title{font
   .dot.red{background:#111;color:#fff}
   .gauge .num,.verdict h2{color:#111}
 }
+
+/* ============ Forge — decision coach ============ */
+.forge-grid{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}
+.forge-side{display:flex;flex-direction:column;gap:16px;position:sticky;top:92px}
+.forge-start .ta{min-height:64px;resize:vertical;line-height:1.5}
+
+/* DNA side card */
+.dna-card{background:linear-gradient(180deg,var(--panel),var(--panel2))}
+.dna-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.dna-head svg{width:18px;height:18px;color:var(--text)}
+.dna-pattern{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.01em}
+.dna-line{font-size:13px;color:var(--muted);line-height:1.55;margin:6px 0 0}
+.conf-bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:12px}
+.conf-bar span{display:block;height:100%;background:var(--text);border-radius:6px}
+.dna-locked{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:8px 0 6px}
+.dna-ring{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:
+  radial-gradient(closest-side,var(--panel) 79%,transparent 80%),conic-gradient(var(--text) var(--p,0%),var(--line) 0)}
+.dna-ring span{display:block;width:0;height:0}
+
+/* how-it-works */
+.forge-how .how-list{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:9px}
+.forge-how .how-list li{font-size:13px;color:var(--muted);line-height:1.5}
+.forge-how .how-list li b{color:var(--text);font-weight:600}
+
+/* commitments */
+.commit-list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.commit-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:var(--panel2)}
+.commit-row.missed{box-shadow:inset 3px 0 0 var(--danger)}
+.commit-row.kept{opacity:.72}
+.commit-text{font-size:14px;font-weight:500;line-height:1.4}
+.commit-when{font-size:11px;color:var(--dim);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
+.commit-actions{display:flex;gap:6px}
+.chip-btn{border:1px solid var(--line);background:transparent;color:var(--muted);font-size:12px;font-weight:600;
+  padding:5px 10px;border-radius:999px;cursor:pointer;transition:.12s}
+.chip-btn:hover{border-color:var(--line2);color:var(--text)}
+.chip-btn.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+/* sessions list */
+.session-list{display:flex;flex-direction:column;margin-top:6px}
+.session-item{display:block;padding:13px 6px;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.session-item:last-child{border-bottom:none}
+.session-item:hover{background:var(--panelhi);border-radius:8px}
+.session-line{display:flex;align-items:center;gap:9px}
+.session-title{font-size:14px;font-weight:600}
+.session-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;padding-left:17px}
+.session-insight{font-size:12.5px;color:var(--muted);line-height:1.45}
+.status-dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--dim)}
+.status-dot.active{background:var(--text);box-shadow:0 0 0 3px var(--panelhi)}
+.status-dot.completed{background:var(--dim)}
+
+/* DNA full page */
+.dna-hero{position:relative;overflow:hidden}
+.dna-hero-top{display:flex;align-items:center;gap:14px}
+.dna-hero-top>svg{width:30px;height:30px;flex:none;color:var(--text)}
+.dna-hero-top h2{font-size:26px}
+.dna-conf{margin-left:auto;text-align:right}
+.dna-conf .conf-num{font-family:var(--font-display);font-size:30px;font-weight:700;line-height:1}
+.dna-hero-line{font-size:16px;line-height:1.6;color:var(--text);margin:16px 0 0;max-width:60ch}
+.dna-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.dna-facet .facet-h{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin-bottom:8px}
+.dna-facet p{font-size:14px;line-height:1.55;margin:0}
+.dna-facet.shadow{box-shadow:var(--shadow),inset 3px 0 0 var(--danger)}
+.dna-facet.shift{box-shadow:var(--shadow),inset 3px 0 0 var(--text)}
+.dna-empty{text-align:center;padding:54px 24px}
+.dna-empty>svg{width:46px;height:46px;opacity:.35;margin-bottom:14px;color:var(--text)}
+.dna-empty h2{font-size:22px}
+
+/* chat */
+.forge-session{max-width:840px}
+.forge-chat{display:flex;flex-direction:column;gap:14px}
+.fc-thread{display:flex;flex-direction:column;gap:14px;min-height:200px}
+.fc-msg{display:flex}
+.fc-msg.user{justify-content:flex-end}
+.fc-bubble{max-width:78%;padding:13px 16px;border-radius:15px;font-size:14.5px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.fc-msg.coach .fc-bubble{background:var(--panel2);border:1px solid var(--line);border-bottom-left-radius:5px}
+.fc-msg.user .fc-bubble{background:var(--text);color:var(--bg);border-bottom-right-radius:5px}
+.fc-typing{display:inline-flex;gap:4px;align-items:center}
+.fc-typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:fcb 1s infinite ease-in-out}
+.fc-typing span:nth-child(2){animation-delay:.15s}
+.fc-typing span:nth-child(3){animation-delay:.3s}
+@keyframes fcb{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.fc-input{display:flex;gap:10px;align-items:flex-end;border-top:1px solid var(--line);padding-top:14px}
+.fc-input textarea{flex:1;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);
+  color:var(--text);font-size:14.5px;font-family:inherit;line-height:1.5;resize:vertical;min-height:46px;outline:none}
+.fc-input textarea:focus{border-color:var(--text);box-shadow:0 0 0 3px var(--panelhi)}
+.fc-actions{display:flex;justify-content:flex-end}
+.fc-close .ta{min-height:60px;resize:vertical}
+
+@media (max-width:960px){
+  .forge-grid{grid-template-columns:1fr}
+  .forge-side{position:static}
+  .dna-trio{grid-template-columns:1fr}
+}
+
+/* landing — products / platform */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.prod{position:relative;background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+  border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.05),inset 0 1px 0 var(--hi);
+  display:flex;flex-direction:column;gap:10px;transition:.18s}
+.prod:hover{border-color:var(--line2);transform:translateY(-3px)}
+.prod.live{box-shadow:0 2px 8px rgba(0,0,0,.05),inset 0 1px 0 var(--hi),inset 3px 0 0 var(--text)}
+.prod-top{display:flex;align-items:center;justify-content:space-between}
+.prod-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:var(--panelhi);border:1px solid var(--line);color:var(--text)}
+.prod-ic svg{width:20px;height:20px}
+.prod-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--bg);background:var(--text);padding:3px 9px;border-radius:999px}
+.prod-tag.soon{color:var(--dim);background:transparent;border:1px solid var(--line)}
+.prod h3{font-size:19px;margin:4px 0 0;letter-spacing:-.01em}
+.prod p{font-size:13.5px;color:var(--muted);line-height:1.55;margin:0;flex:1}
+.prod-link{font-size:13px;font-weight:600;color:var(--text);margin-top:4px}
+.prod-link.dim{color:var(--dim);font-weight:500}

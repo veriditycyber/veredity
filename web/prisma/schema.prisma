@@ -19,11 +19,62 @@ model User {
   name         String?
   company      String?
   plan         String   @default("free") // free | pro | business
+  forgePattern String?  // dominant founder pattern
+  forgeConfidence Int   @default(0) // 0-100
   createdAt    DateTime @default(now())
   sessions     Session[]
   checks       Check[]
   links        VerificationLink[]
   interviews   Interview[]
+  forge        ForgeSession[]
+  forgeCommitments ForgeCommitment[]
+}
+
+model ForgeSession {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String?
+  decisionContext String?
+  mode            String?  // insight | accountability | confrontation | exploration
+  category        String?  // people | pricing | priorities | communication | delegation | strategy | execution
+  pattern         String?  // detected pattern for this session
+  rationale       String?
+  insight         String?  // one-sentence close observation
+  status          String   @default("active") // active | completed
+  clarityScore    Int?     // 0-100
+  createdAt       DateTime @default(now())
+  closedAt        DateTime?
+  messages        ForgeMessage[]
+  commitments     ForgeCommitment[]
+
+  @@index([userId, createdAt])
+}
+
+model ForgeMessage {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   ForgeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String   // user | coach
+  content   String
+  avoidance Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([sessionId, createdAt])
+}
+
+model ForgeCommitment {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId String?
+  session   ForgeSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  text      String   // verbatim
+  deadline  String?
+  status    String   @default("pending") // pending | done | in_progress | not_done
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
 }
 
 model Interview {

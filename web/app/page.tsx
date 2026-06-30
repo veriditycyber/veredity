@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { Logo, LogoMark } from "@/components/Logo";
-import { Shield, Lock, Check, Scan, Clock, Person } from "@/components/icons";
+import { Shield, Lock, Check, Scan, Clock, Person, Flame, Audio, Grid } from "@/components/icons";
 import ThemeToggle from "@/components/ThemeToggle";
 import MatrixRain from "@/components/MatrixRain";
 import CursorGlow from "@/components/CursorGlow";
@@ -20,6 +20,7 @@ export default async function Landing() {
         <div className="lp-nav-in">
           <Logo size={30} />
           <nav className="lp-nav-links">
+            <a href="#products">Products</a>
             <a href="#how">How it works</a>
             <a href="#features">Features</a>
             <a href="#trust">Security</a>
@@ -156,6 +157,41 @@ export default async function Landing() {
           </div>
         </section>
 
+        {/* PRODUCTS — the Veridity platform */}
+        <section className="lp-section reveal" id="products">
+          <div className="head">
+            <span className="kicker">The Veridity platform</span>
+            <h2>One company. A suite of truth tools.</h2>
+            <p>Veridity builds AI that tells you the truth — about who you&apos;re hiring, the decisions you&apos;re avoiding, and the systems you&apos;re trusting. Two products live today, more on the way.</p>
+          </div>
+          <div className="prod-grid">
+            <div className="prod live">
+              <div className="prod-top"><span className="prod-ic"><Shield /></span><span className="prod-tag">Live</span></div>
+              <h3>TrueHire</h3>
+              <p>Deepfake &amp; identity verification for remote hiring. Catch impersonators and AI-fronted candidates before you make an offer.</p>
+              <Link className="prod-link" href="/signup">Start verifying →</Link>
+            </div>
+            <div className="prod live">
+              <div className="prod-top"><span className="prod-ic"><Flame /></span><span className="prod-tag">Live</span></div>
+              <h3>Forge</h3>
+              <p>A confrontational AI coach for founders. It finds the pattern keeping you stuck, names it, and holds you to one commitment at a time.</p>
+              <Link className="prod-link" href="/forge">Meet your coach →</Link>
+            </div>
+            <div className="prod">
+              <div className="prod-top"><span className="prod-ic"><Audio /></span><span className="prod-tag soon">Soon</span></div>
+              <h3>VoiceShield</h3>
+              <p>Real-time synthetic-voice defense for call centers and support lines — flagging cloned voices mid-call.</p>
+              <span className="prod-link dim">In development</span>
+            </div>
+            <div className="prod">
+              <div className="prod-top"><span className="prod-ic"><Grid /></span><span className="prod-tag soon">Soon</span></div>
+              <h3>AgentGuard</h3>
+              <p>Security and guardrails for autonomous AI agents — so the agents acting on your behalf can be trusted.</p>
+              <span className="prod-link dim">In development</span>
+            </div>
+          </div>
+        </section>
+
         {/* TRUST / SECURITY */}
         <section className="lp-section reveal" id="trust">
           <div className="head">
@@ -189,7 +225,7 @@ export default async function Landing() {
         <div className="lp-foot-in">
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <LogoMark size={26} />
-            <small>© 2026 Veridity · veridity.in · Cybersecurity<br />TrueHire — a fraud-risk signal for hiring, not an automated hiring decision.</small>
+            <small>© 2026 Veridity · veridity.in · AI that tells you the truth<br />TrueHire &amp; Forge are Veridity products. TrueHire is a fraud-risk signal, not an automated hiring decision.</small>
           </div>
           <div style={{ display: "flex", gap: 18 }}>
             <Link className="hint" href="/login" style={{ color: "var(--muted)" }}>Sign in</Link>

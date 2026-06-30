@@ -71,3 +71,12 @@ export const Card = (p: SVGProps<SVGSVGElement>) => (
 export const Chevron = (p: SVGProps<SVGSVGElement>) => (
   <svg {...base(p)}><path d="m6 9 6 6 6-6" /></svg>
 );
+export const Flame = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}><path d="M12 3c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1.2.4-2 1-2.8C9 9.8 9 11 10 11.5 9.2 9 11 5.5 12 3z" /><path d="M12 21a5 5 0 0 0 5-5c0-1.3-.5-2.4-1.2-3.3" /></svg>
+);
+export const Target = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.4" /></svg>
+);
+export const Compass = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2 5-5 2 2-5z" /></svg>
+);
