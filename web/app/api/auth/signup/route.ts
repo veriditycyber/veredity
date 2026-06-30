@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { hashPassword, createSession } from "@/lib/auth";
+import { issueToken } from "@/lib/tokens";
+import { sendEmail, verifyEmailHtml, appUrl } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -18,5 +20,12 @@ export async function POST(req: Request) {
     data: { email: e, passwordHash: hashPassword(password), name: name || null, company: company || null },
   });
   await createSession(user.id);
+
+  // Fire off a verification email (best-effort — never blocks signup).
+  try {
+    const token = await issueToken(user.id, "verify_email");
+    await sendEmail(e, "Confirm your Veridity email", verifyEmailHtml(`${appUrl()}/verify-email?token=${token}`));
+  } catch {}
+
   return NextResponse.json({ ok: true });
 }

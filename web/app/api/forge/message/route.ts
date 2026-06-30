@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { AI_KEY, claude, type ChatMsg } from "@/lib/ai";
+import { anyProviderConfigured, claude, type ChatMsg } from "@/lib/ai";
 import { buildCoachSystem, detectAvoidance, type Mode } from "@/lib/forge";
 
 export const runtime = "nodejs";
@@ -10,9 +10,9 @@ export const maxDuration = 60;
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  if (!AI_KEY) return NextResponse.json({ error: "no_ai_key" }, { status: 503 });
+  if (!anyProviderConfigured()) return NextResponse.json({ error: "no_ai_key" }, { status: 503 });
 
-  const { sessionId, content } = await req.json().catch(() => ({}));
+  const { sessionId, content, model } = await req.json().catch(() => ({}));
   const text = (content || "").toString().trim();
   if (!sessionId || !text) return NextResponse.json({ error: "bad_request" }, { status: 400 });
 
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   });
 
   let reply: string;
-  try { reply = await claude(sys, history, 350); }
+  try { reply = await claude(sys, history, 350, model || user.aiModel); }
   catch (e: any) { return NextResponse.json({ error: "ai_failed", message: e?.message || "Coach unavailable." }, { status: 502 }); }
 
   const cm = await prisma.forgeMessage.create({ data: { sessionId, role: "coach", content: reply } });

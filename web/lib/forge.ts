@@ -93,8 +93,8 @@ export function buildCoachSystem(opts: {
   return parts.join("\n\n");
 }
 
-// Classify the dominant pattern from a session's messages (Claude).
-export async function classifyPattern(messages: { role: string; content: string }[]): Promise<{ pattern: PatternKey; rationale: string; confidence: number } | null> {
+// Classify the dominant pattern from a session's messages.
+export async function classifyPattern(messages: { role: string; content: string }[], modelId?: string | null): Promise<{ pattern: PatternKey; rationale: string; confidence: number } | null> {
   const convo = messages.map((m) => `${m.role === "user" ? "FOUNDER" : "COACH"}: ${m.content}`).join("\n").slice(0, 8000);
   const sys = `You classify a founder's dominant decision-making pattern from a coaching conversation. Respond with ONLY JSON.`;
   const prompt = `Pattern options:
@@ -110,17 +110,17 @@ Conversation:
 """
 ${convo}
 """`;
-  const out = await claude(sys, [{ role: "user", content: prompt }], 400).catch(() => "");
+  const out = await claude(sys, [{ role: "user", content: prompt }], 400, modelId).catch(() => "");
   const j = extractJSON<{ pattern: PatternKey; rationale: string; confidence: number }>(out);
   if (!j || !(PATTERNS as any)[j.pattern]) return null;
   return { pattern: j.pattern, rationale: j.rationale || "", confidence: Math.max(0, Math.min(100, Math.round(j.confidence ?? 50))) };
 }
 
-// One-sentence session insight (Claude).
-export async function generateInsight(messages: { role: string; content: string }[]): Promise<string> {
+// One-sentence session insight.
+export async function generateInsight(messages: { role: string; content: string }[], modelId?: string | null): Promise<string> {
   if (messages.length < 4) return "";
   const convo = messages.slice(-14).map((m) => `${m.role === "user" ? "FOUNDER" : "COACH"}: ${m.content}`).join("\n").slice(0, 6000);
   const sys = `Write one sharp, specific sentence a sharp coach would observe after this session. No quotes, no preamble. It should name the real thing under the surface.`;
-  const out = await claude(sys, [{ role: "user", content: convo }], 150).catch(() => "");
+  const out = await claude(sys, [{ role: "user", content: convo }], 150, modelId).catch(() => "");
   return out.replace(/^["']|["']$/g, "").trim();
 }

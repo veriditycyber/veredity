@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Scorecard from "./Scorecard";
+import ModelPicker from "./ModelPicker";
 import { Sparkle } from "./icons";
 
 export default function InterviewAssistant() {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [tx, setTx] = useState("");
+  const [model, setModel] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [res, setRes] = useState<any>(null);
@@ -17,7 +19,7 @@ export default function InterviewAssistant() {
     try {
       const r = await fetch("/api/interview", {
         method: "POST", headers: { "content-type": "application/json" },
-        body: JSON.stringify({ transcript: tx, candidateName: name, role }),
+        body: JSON.stringify({ transcript: tx, candidateName: name, role, model }),
       });
       const d = await r.json();
       if (r.ok) setRes(d); else setErr(d.message || "Analysis failed.");
@@ -37,15 +39,18 @@ export default function InterviewAssistant() {
 
   return (
     <div className="card">
-      <div className="actions" style={{ marginBottom: 12 }}>
-        <input className="input" placeholder="Candidate name (optional)" value={name} onChange={(e) => setName(e.target.value)} style={{ maxWidth: 240 }} />
-        <input className="input" placeholder="Role, e.g. Backend Engineer" value={role} onChange={(e) => setRole(e.target.value)} style={{ maxWidth: 280 }} />
+      <div className="flex-between" style={{ marginBottom: 12, gap: 12, flexWrap: "wrap" }}>
+        <div className="actions" style={{ margin: 0 }}>
+          <input className="input" placeholder="Candidate name (optional)" value={name} onChange={(e) => setName(e.target.value)} style={{ maxWidth: 240 }} />
+          <input className="input" placeholder="Role, e.g. Backend Engineer" value={role} onChange={(e) => setRole(e.target.value)} style={{ maxWidth: 280 }} />
+        </div>
+        <ModelPicker value={model} onChange={setModel} compact />
       </div>
       <textarea className="input ta" placeholder="Paste the interview transcript or your notes here…" value={tx} onChange={(e) => setTx(e.target.value)} rows={9} />
       {err && <p className="err" style={{ marginTop: 8 }}>{err}</p>}
       <div className="actions" style={{ marginTop: 12 }}>
         <button className="btn btn-primary" disabled={busy || tx.trim().length < 40} onClick={analyze}><Sparkle /> {busy ? "Analyzing…" : "Analyze interview"}</button>
-        <span className="hint">Claude reads the transcript and scores fit, strengths, risks &amp; follow-up questions.</span>
+        <span className="hint">Your selected model reads the transcript and scores fit, strengths, risks &amp; follow-up questions.</span>
       </div>
     </div>
   );

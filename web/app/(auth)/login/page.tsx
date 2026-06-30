@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Shield, Lock, Check } from "@/components/icons";
 import { Logo } from "@/components/Logo";
+import SocialAuth from "@/components/SocialAuth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,13 +32,17 @@ export default function LoginPage() {
       <Logo sub="TrueHire" />
       <div className="auth-title">Sign in</div>
       <div className="auth-sub">Secure access to your candidate verification console.</div>
+      <SocialAuth label="sign in" />
       <form onSubmit={submit}>
         <div className="field">
           <label>Work email</label>
           <input className="input" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" required />
         </div>
         <div className="field">
-          <label>Password</label>
+          <div className="flex-between" style={{ marginBottom: 6 }}>
+            <label style={{ margin: 0 }}>Password</label>
+            <Link href="/forgot-password" className="hint" style={{ color: "var(--muted)" }}>Forgot?</Link>
+          </div>
           <input className="input" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required />
         </div>
         <div className="err">{err}</div>

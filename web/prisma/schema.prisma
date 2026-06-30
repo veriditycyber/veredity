@@ -15,10 +15,16 @@ datasource db {
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
-  passwordHash String
+  passwordHash String?  // null for OAuth-only accounts
   name         String?
   company      String?
+  image        String?  // avatar from OAuth provider
   plan         String   @default("free") // free | pro | business
+  emailVerified DateTime?              // set when the user confirms their email
+  googleId     String?                 // OAuth subject ids (uniqueness enforced in code)
+  appleId      String?
+  aiProvider   String?                 // preferred default model provider
+  aiModel      String?                 // preferred default model id
   forgePattern String?  // dominant founder pattern
   forgeConfidence Int   @default(0) // 0-100
   createdAt    DateTime @default(now())
@@ -28,6 +34,56 @@ model User {
   interviews   Interview[]
   forge        ForgeSession[]
   forgeCommitments ForgeCommitment[]
+  tokens       VerificationToken[]
+  subscription Subscription?
+  payments     Payment[]
+
+  @@index([googleId])
+  @@index([appleId])
+}
+
+// One-time tokens for email verification and password reset.
+model VerificationToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // verify_email | reset_password
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId, type])
+}
+
+// Razorpay subscription mirror — one active row per user.
+model Subscription {
+  id                     String   @id @default(cuid())
+  userId                 String   @unique
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                   String   // pro | business
+  status                 String   @default("created") // created | authenticated | active | pending | halted | cancelled | completed | expired
+  razorpaySubscriptionId String?  @unique
+  razorpayCustomerId     String?
+  shortUrl               String?  // hosted checkout / management url
+  currentPeriodEnd       DateTime?
+  cancelAtPeriodEnd      Boolean  @default(false)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+// Audit log of payment events from Razorpay webhooks.
+model Payment {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  razorpayPaymentId String?  @unique
+  amount            Int      // in paise
+  currency          String   @default("INR")
+  status            String   // captured | failed | refunded
+  description       String?
+  createdAt         DateTime @default(now())
+
+  @@index([userId, createdAt])
 }
 
 model ForgeSession {

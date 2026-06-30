@@ -19,7 +19,9 @@ export default function ForgeChat({
   const [clarity, setClarity] = useState(70);
   const [result, setResult] = useState<{ insight: string; pattern: string | null } | null>(insight ? { insight, pattern: null } : null);
   const endRef = useRef<HTMLDivElement>(null);
+  const modelRef = useRef<string>("");
 
+  useEffect(() => { try { modelRef.current = localStorage.getItem("veridity_forge_model") || localStorage.getItem("veridity_model") || ""; } catch {} }, []);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, sending]);
 
   async function send() {
@@ -29,7 +31,7 @@ export default function ForgeChat({
     setMessages((m) => [...m, { id: "u" + Date.now(), role: "user", content: text }]);
     setSending(true);
     try {
-      const r = await fetch("/api/forge/message", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ sessionId, content: text }) });
+      const r = await fetch("/api/forge/message", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ sessionId, content: text, model: modelRef.current }) });
       const d = await r.json();
       setMessages((m) => [...m, d.message || { id: "e" + Date.now(), role: "coach", content: "(coach unavailable — try again)" }]);
     } catch { setMessages((m) => [...m, { id: "e" + Date.now(), role: "coach", content: "(network error)" }]); }
@@ -39,7 +41,7 @@ export default function ForgeChat({
   async function doClose() {
     setBusy(true);
     try {
-      const r = await fetch("/api/forge/close", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ sessionId, commitmentText: commit, deadline, clarityScore: clarity }) });
+      const r = await fetch("/api/forge/close", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ sessionId, commitmentText: commit, deadline, clarityScore: clarity, model: modelRef.current }) });
       const d = await r.json();
       if (d.ok) { setClosed(true); setResult({ insight: d.insight, pattern: d.pattern }); }
     } finally { setBusy(false); }

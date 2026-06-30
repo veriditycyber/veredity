@@ -10,17 +10,18 @@ export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  const { sessionId, commitmentText, deadline, clarityScore } = await req.json().catch(() => ({}));
+  const { sessionId, commitmentText, deadline, clarityScore, model } = await req.json().catch(() => ({}));
   const session = await prisma.forgeSession.findFirst({
     where: { id: sessionId, userId: user.id },
     include: { messages: { orderBy: { createdAt: "asc" } } },
   });
   if (!session) return NextResponse.json({ error: "not_found" }, { status: 404 });
 
+  const modelId = model || user.aiModel;
   const msgs = session.messages.map((m) => ({ role: m.role, content: m.content }));
   const [insight, cls] = await Promise.all([
-    generateInsight(msgs).catch(() => ""),
-    classifyPattern(msgs).catch(() => null),
+    generateInsight(msgs, modelId).catch(() => ""),
+    classifyPattern(msgs, modelId).catch(() => null),
   ]);
 
   await prisma.forgeSession.update({

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Shield, Lock, Check } from "@/components/icons";
 import { Logo } from "@/components/Logo";
+import SocialAuth from "@/components/SocialAuth";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function SignupPage() {
       <Logo sub="TrueHire" />
       <div className="auth-title">Create your account</div>
       <div className="auth-sub">Start verifying candidates against deepfake & impersonation fraud.</div>
+      <SocialAuth label="sign up" />
       <form onSubmit={submit}>
         <div className="field">
           <label>Your name</label>

@@ -8,7 +8,11 @@ export async function POST(req: Request) {
   const { email, password } = await req.json().catch(() => ({}));
   const e = (email || "").toString().trim().toLowerCase();
   const user = e ? await prisma.user.findUnique({ where: { email: e } }) : null;
-  if (!user || !verifyPassword(password || "", user.passwordHash)) {
+  if (!user || !user.passwordHash) {
+    // No password set → either no account or an OAuth-only account.
+    return NextResponse.json({ error: "bad_credentials", message: user && !user.passwordHash ? "This account uses Google or Apple sign-in. Continue with that, or set a password from Settings." : "Incorrect email or password." }, { status: 401 });
+  }
+  if (!verifyPassword(password || "", user.passwordHash)) {
     return NextResponse.json({ error: "bad_credentials", message: "Incorrect email or password." }, { status: 401 });
   }
   await createSession(user.id);

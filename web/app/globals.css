@@ -592,3 +592,63 @@ h1,h2,h3,.logo-words,.hero h1,.lp-section .head h2,.cta-band h2,.auth-title{font
 .prod p{font-size:13.5px;color:var(--muted);line-height:1.55;margin:0;flex:1}
 .prod-link{font-size:13px;font-weight:600;color:var(--text);margin-top:4px}
 .prod-link.dim{color:var(--dim);font-weight:500}
+
+/* ============ Model picker ============ */
+.mp{position:relative;display:inline-block}
+.mp-btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel2);color:var(--text);
+  border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.mp-btn:hover{border-color:var(--line2)}
+.mp-btn svg{width:15px;height:15px}
+.mp-label{white-space:nowrap}
+.mp-chev{width:13px!important;height:13px!important;color:var(--muted)}
+.mp.compact .mp-btn{padding:7px 11px;font-size:12.5px}
+.mp-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:40;width:288px;background:var(--panel);
+  border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px}
+.mp-empty{font-size:12px;color:var(--muted);padding:12px;line-height:1.5}
+.mp-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:transparent;border:none;
+  border-radius:9px;padding:9px 10px;cursor:pointer;color:var(--text)}
+.mp-item:hover:not(:disabled){background:var(--panelhi)}
+.mp-item.on{background:var(--panelhi)}
+.mp-item.dim{opacity:.45;cursor:not-allowed}
+.mp-ic{width:16px;display:grid;place-items:center;color:var(--text)}
+.mp-ic svg{width:14px;height:14px}
+.mp-dot{width:6px;height:6px;border-radius:50%;background:var(--dim)}
+.mp-text{flex:1;display:flex;flex-direction:column;line-height:1.25}
+.mp-text b{font-size:13px}
+.mp-text small{font-size:11px;color:var(--muted)}
+.mp-tier{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);
+  border:1px solid var(--line);border-radius:999px;padding:2px 7px;flex:none}
+.mp-tier.frontier{color:var(--text);border-color:var(--line2)}
+
+/* ============ Email verification ============ */
+.verify-mark{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;margin:18px auto 4px;border:1px solid var(--line);background:var(--panel2)}
+.verify-mark svg{width:26px;height:26px}
+.verify-mark.ok{background:var(--text);color:var(--bg);border-color:var(--text)}
+.verify-mark.fail{border-color:var(--danger);color:var(--danger)}
+.verify-banner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:11px clamp(28px,4vw,72px);border-bottom:1px solid var(--line);background:var(--panelhi);font-size:13.5px}
+.verify-banner .vb-ic{display:grid;place-items:center;color:var(--text)}
+.verify-banner .vb-ic svg{width:16px;height:16px}
+.verify-banner .vb-text{color:var(--text)}
+.verify-banner .vb-btn{background:var(--text);color:var(--bg);border:none;border-radius:8px;padding:6px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+.verify-banner .vb-btn:disabled{opacity:.6;cursor:default}
+.verify-banner .vb-done{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-weight:600}
+.verify-banner .vb-done svg{width:14px;height:14px}
+.verify-banner .vb-err{color:var(--danger);font-size:12px}
+.verify-banner .vb-x{margin-left:auto;background:none;border:none;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;padding:0 4px}
+
+/* ============ Social auth ============ */
+.social-auth{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.social-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--panel2);color:var(--text);border:1px solid var(--line);font-weight:600}
+.social-btn:hover{border-color:var(--text);background:var(--panelhi)}
+.social-btn svg{width:18px;height:18px;flex:none}
+.auth-divider{display:flex;align-items:center;text-align:center;color:var(--dim);font-size:12px;margin:4px 0 18px}
+.auth-divider::before,.auth-divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.auth-divider span{padding:0 12px}
+
+/* ============ Danger button / zone ============ */
+.btn-danger{border-color:var(--danger);color:var(--danger);background:transparent}
+.btn-danger:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+.btn-danger:disabled{opacity:.45;cursor:not-allowed}
+.btn-danger:disabled:hover{background:transparent;color:var(--danger)}
+.danger-zone{border-color:color-mix(in srgb,var(--danger) 30%,var(--line))}

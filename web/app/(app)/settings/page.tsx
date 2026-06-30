@@ -5,6 +5,10 @@ import { monthlyCheckCount } from "@/lib/usage";
 import { PLANS, planOf, effectiveScanLimit } from "@/lib/plans";
 import Topbar from "@/components/Topbar";
 import LogoutButton from "@/components/LogoutButton";
+import ModelPreference from "@/components/ModelPreference";
+import ChangePassword from "@/components/ChangePassword";
+import DeleteAccount from "@/components/DeleteAccount";
+import { anyProviderConfigured } from "@/lib/ai";
 import { Lock, Shield, Check } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -33,6 +37,13 @@ export default async function SettingsPage() {
           <Row k="Name" v={user.name || "—"} />
           <Row k="Company" v={user.company || "—"} />
           <Row k="Email" v={user.email} />
+          <div className="flex-between" style={{ padding: "12px 0", borderBottom: "1px solid var(--line)" }}>
+            <span className="muted">Email status</span>
+            {user.emailVerified
+              ? <span className="badge green"><Check /> Verified</span>
+              : <span className="badge yellow">Unverified</span>}
+          </div>
+          <Row k="Sign-in methods" v={[user.passwordHash ? "Email" : null, user.googleId ? "Google" : null, user.appleId ? "Apple" : null].filter(Boolean).join(", ") || "—"} />
           <Row k="Member since" v={new Date(user.createdAt).toLocaleDateString()} />
           <div style={{ marginTop: 18 }}><LogoutButton /></div>
         </div>
@@ -46,7 +57,21 @@ export default async function SettingsPage() {
           <Row k="Total checks run" v={String(total)} />
           <Row k="Checks this month" v={`${monthUsed} / ${effectiveScanLimit(user.plan)}`} />
           <Row k="Detection engine" v="Reality Defender" />
-          <Row k="Interview AI" v="Claude" />
+        </div>
+
+        <div className="card">
+          <p className="section-title">AI preferences</p>
+          <p className="muted" style={{ fontSize: 14, margin: "0 0 14px" }}>
+            Pick the default model for Interview AI and the Forge coach. You can still switch per-session.
+          </p>
+          {anyProviderConfigured()
+            ? <ModelPreference initial={user.aiModel} />
+            : <p className="hint">No AI provider configured yet. Add a provider key (Claude, OpenAI, or Gemini) to enable model selection.</p>}
+        </div>
+
+        <div className="card">
+          <p className="section-title">Password</p>
+          <ChangePassword hasPassword={!!user.passwordHash} />
         </div>
 
         <div className="card">
@@ -59,6 +84,11 @@ export default async function SettingsPage() {
             <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}><span className="sig-ok"><Shield /></span><span style={{ fontSize: 14 }}>Uploaded media is sent to the detection engine and deleted immediately — never stored at rest.</span></div>
             <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}><span className="sig-ok"><Check /></span><span style={{ fontSize: 14 }}>Consent is required before every biometric check (BIPA-aligned). Veridity is a fraud signal, not an automated hiring decision.</span></div>
           </div>
+        </div>
+
+        <div className="card danger-zone">
+          <p className="section-title" style={{ color: "var(--danger)" }}>Danger zone</p>
+          <DeleteAccount />
         </div>
       </div>
     </>
