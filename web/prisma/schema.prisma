@@ -40,6 +40,7 @@ model User {
   trustReports TrustReport[]
   botSessions  InterviewSession[]
   apiKeys      ApiKey[]
+  monitors     Monitor[]
 
   @@index([googleId])
   @@index([appleId])
@@ -229,16 +230,57 @@ model Interview {
 }
 
 model VerificationLink {
-  id            String   @id @default(cuid())
-  token         String   @unique
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  candidateName String?
-  status        String   @default("pending") // pending | done
-  checkId       String?
-  createdAt     DateTime @default(now())
+  id             String   @id @default(cuid())
+  token          String   @unique
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidateName  String?
+  status         String   @default("pending") // pending | done
+  checkId        String?
+  // ID + liveness verification
+  mode           String   @default("basic") // basic | id
+  challengeCode  String?  // shown to the candidate as a liveness prompt
+  livenessPassed Boolean  @default(false)
+  idChecked      Boolean  @default(false)
+  faceMatchScore Int?     // 0-100 selfie↔ID match (null = provider not configured)
+  createdAt      DateTime @default(now())
 
   @@index([userId, createdAt])
+}
+
+// Continuous / post-hire re-verification — periodically re-screen a hire.
+model Monitor {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjectName    String?
+  email          String?
+  phone          String?
+  claimedCountry String?
+  intervalDays   Int      @default(30)
+  status         String   @default("active") // active | paused
+  lastRunAt      DateTime?
+  nextDueAt      DateTime
+  lastScore      Int?
+  lastBand       String?
+  runs           Int      @default(0)
+  createdAt      DateTime @default(now())
+
+  @@index([userId, nextDueAt])
+}
+
+// Fraud Intelligence Network — privacy-safe cross-account signal graph.
+// We store only SHA-256 hashes of identifiers, never raw PII.
+model FraudSignal {
+  id         String   @id @default(cuid())
+  kind       String   // email | phone | domain
+  hash       String   // sha256 of the normalized identifier
+  band       String   // green | yellow | red (outcome that was seen)
+  reporterId String   // which account observed it (for distinct-account counts)
+  createdAt  DateTime @default(now())
+
+  @@index([hash])
+  @@index([kind, hash])
 }
 
 model Session {

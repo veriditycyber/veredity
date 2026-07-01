@@ -727,3 +727,13 @@ h1,h2,h3,.logo-words,.hero h1,.lp-section .head h2,.cta-band h2,.auth-title{font
 /* ============ API keys ============ */
 .key-reveal{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
 .key-reveal code{flex:1;font-size:12.5px;word-break:break-all;color:var(--text)}
+
+/* ============ ID + liveness verify ============ */
+.v-step{border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;background:var(--panel2)}
+.v-step-h{display:flex;align-items:center;gap:10px;font-weight:600;font-size:14px;margin-bottom:10px}
+.v-step-n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--panelhi);border:1px solid var(--line);font-size:12px;font-weight:700}
+.v-step-n.done{background:var(--text);color:var(--bg);border-color:var(--text)}
+.v-step-n.done svg{width:13px;height:13px}
+.liveness-prompt{background:var(--text);color:var(--bg);border-radius:9px;padding:9px 12px;font-size:13px;margin-bottom:10px;text-align:center}
+.liveness-prompt b{font-size:18px;letter-spacing:.15em}
+.linklike{background:none;border:none;color:var(--text);text-decoration:underline;cursor:pointer;font:inherit;padding:0}

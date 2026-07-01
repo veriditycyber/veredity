@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
   const results = await mapLimit(clean, 6, async (r) => {
     const claimedCountry = (r.claimedCountry || "").toString().trim().toUpperCase() || undefined;
-    const res = await computeTrust({ candidateName: r.candidateName, email: r.email, phone: r.phone, claimedCountry }).catch(() => null);
+    const res = await computeTrust({ candidateName: r.candidateName, email: r.email, phone: r.phone, claimedCountry, reporterId: user.id }).catch(() => null);
     if (!res) return { candidateName: r.candidateName || null, email: r.email || null, score: null, band: "—" as string };
     await prisma.trustReport.create({
       data: {

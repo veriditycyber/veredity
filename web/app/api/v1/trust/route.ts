@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   }
 
   const claimedCountry = (body.claimedCountry || "").toString().trim().toUpperCase() || undefined;
-  const result = await computeTrust({ candidateName: body.candidateName, email, phone, claimedCountry, resumeText, model: user.aiModel });
+  const result = await computeTrust({ candidateName: body.candidateName, email, phone, claimedCountry, resumeText, model: user.aiModel, reporterId: user.id });
 
   // Log to the key owner's history so API + dashboard stay unified.
   const report = await prisma.trustReport.create({

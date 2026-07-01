@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { monthlyCheckCount } from "@/lib/usage";
 import { effectiveScanLimit } from "@/lib/plans";
+import { networkSize } from "@/lib/fraudnet";
 import Topbar from "@/components/Topbar";
 import { BandBadge } from "@/components/Badge";
 import { ActivityChart, RiskDonut } from "@/components/Charts";
@@ -16,7 +17,7 @@ export default async function Dashboard() {
   since.setHours(0, 0, 0, 0);
   since.setDate(since.getDate() - 13);
 
-  const [total, green, yellow, red, monthUsed, recent, last14] = await Promise.all([
+  const [total, green, yellow, red, monthUsed, recent, last14, netSize] = await Promise.all([
     prisma.check.count({ where: { userId: user.id } }),
     prisma.check.count({ where: { userId: user.id, band: "green" } }),
     prisma.check.count({ where: { userId: user.id, band: "yellow" } }),
@@ -24,6 +25,7 @@ export default async function Dashboard() {
     monthlyCheckCount(),
     prisma.check.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 6 }),
     prisma.check.findMany({ where: { userId: user.id, createdAt: { gte: since } }, select: { createdAt: true, band: true } }),
+    networkSize(),
   ]);
   const scansLeft = Math.max(0, effectiveScanLimit(user.plan) - monthUsed);
 
@@ -57,6 +59,7 @@ export default async function Dashboard() {
           <div className="stat red"><div className="l"><Alert /> High risk</div><div className="n">{red}</div><div className="s">Flagged likely deepfake</div></div>
           <div className="stat"><div className="l"><Shield /> Needs review</div><div className="n">{yellow}</div><div className="s">Inconclusive verdicts</div></div>
           <div className="stat"><div className="l"><Scan /> Scans left</div><div className="n">{scansLeft}</div><div className="s">This month · resets monthly</div></div>
+          <div className="stat"><div className="l"><Shield /> Fraud network</div><div className="n">{netSize.toLocaleString()}</div><div className="s">Signals shared across TrueHire</div></div>
         </div>
 
         <div className="dash-2col">

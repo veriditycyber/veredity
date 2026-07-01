@@ -240,6 +240,25 @@ still works.
 
 ---
 
+## 6e. ID + liveness verification (face match) — optional
+
+The self-verification link has two modes: **Deepfake check** (selfie only, works with
+just `RD_API_KEY`) and **ID + liveness** (live selfie with a liveness challenge + a
+government ID photo). The liveness + deepfake parts work out of the box; the
+**face-match** between selfie and ID is provider-gated.
+
+Point it at any face-comparison service (AWS Rekognition `CompareFaces`, Azure Face,
+Face++/Luxand, or a tiny proxy you host). It must accept
+`POST { image1, image2 }` (base64) and return a similarity:
+```
+FACEMATCH_API_URL=https://your-endpoint/compare
+FACEMATCH_API_KEY=...            # optional; sent as Bearer if set
+```
+Without it, ID links still capture the ID + run liveness + deepfake — only the
+numeric face-match score is omitted.
+
+---
+
 ## 6c. Trust API (developers) — nothing to configure
 
 The public **Trust API** (`POST /api/v1/trust`) works out of the box — no external

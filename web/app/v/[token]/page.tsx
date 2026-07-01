@@ -35,7 +35,7 @@ export default async function VerifyPage({ params }: { params: Promise<{ token: 
 
   return (
     <div className="verify-wrap">
-      <VerifyClient token={token} company={company} />
+      <VerifyClient token={token} company={company} mode={link.mode} challengeCode={link.challengeCode} />
     </div>
   );
 }

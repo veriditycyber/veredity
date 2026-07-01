@@ -28,7 +28,7 @@ export async function POST(req: Request) {
   const claimedCountry = (body.claimedCountry || "").toString().trim().toUpperCase() || undefined;
   const result = await computeTrust({
     candidateName: body.candidateName, email, phone, claimedCountry,
-    resumeText, checkBand, model: body.model || user.aiModel,
+    resumeText, checkBand, model: body.model || user.aiModel, reporterId: user.id,
   });
 
   const report = await prisma.trustReport.create({

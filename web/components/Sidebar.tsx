@@ -12,6 +12,7 @@ const TRUEHIRE_NAV = [
   { href: "/bot", label: "Interview Bot", Icon: Camera },
   { href: "/interviews", label: "Interview AI", Icon: Sparkle },
   { href: "/links", label: "Verify Links", Icon: Send },
+  { href: "/monitor", label: "Monitoring", Icon: Target },
   { href: "/history", label: "History", Icon: Clock },
   { href: "/developers", label: "Developers", Icon: Code },
   { href: "/billing", label: "Billing", Icon: Card },

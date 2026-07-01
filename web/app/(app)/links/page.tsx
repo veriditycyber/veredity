@@ -32,15 +32,23 @@ export default async function LinksPage() {
             <div className="empty"><Send /><div>No links yet. Generate one above.</div></div>
           ) : (
             <table className="table">
-              <thead><tr><th>Candidate</th><th>Status</th><th>Result</th><th>Created</th></tr></thead>
+              <thead><tr><th>Candidate</th><th>Type</th><th>Status</th><th>Result</th><th>Created</th></tr></thead>
               <tbody>
                 {links.map((l) => {
                   const c = l.checkId ? checkMap.get(l.checkId) : null;
                   return (
                     <tr key={l.id}>
                       <td>{l.candidateName || "—"}</td>
+                      <td><span className="badge gray">{l.mode === "id" ? "ID + liveness" : "Deepfake"}</span></td>
                       <td>{l.status === "done" ? <span className="badge green">Completed</span> : <span className="badge gray">Pending</span>}</td>
-                      <td>{c ? <Link className="row-link" href={`/history/${c.id}`}><BandBadge band={c.band} status={c.status} /></Link> : <span className="muted">—</span>}</td>
+                      <td>
+                        {c ? <Link className="row-link" href={`/history/${c.id}`}><BandBadge band={c.band} status={c.status} /></Link> : <span className="muted">—</span>}
+                        {l.mode === "id" && l.status === "done" && (
+                          <span className="muted" style={{ fontSize: 12, marginLeft: 8 }}>
+                            {l.livenessPassed ? "· liveness ✓" : ""}{typeof l.faceMatchScore === "number" ? ` · match ${l.faceMatchScore}%` : l.idChecked ? " · ID ✓" : ""}
+                          </span>
+                        )}
+                      </td>
                       <td className="muted">{new Date(l.createdAt).toLocaleDateString()}</td>
                     </tr>
                   );

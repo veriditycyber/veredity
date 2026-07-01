@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { API_KEY, MAX_MONTHLY_SCANS, saveTemp, unlinkQuiet, detectSettled } from "@/lib/rd";
 import { monthlyCheckCount } from "@/lib/usage";
+import { matchFaces, faceMatchConfigured } from "@/lib/facematch";
 import { prisma } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -23,11 +24,21 @@ export async function POST(req: Request, ctx: { params: Promise<{ token: string 
   const form = await req.formData();
   const file = form.get("file");
   if (!(file instanceof File)) return NextResponse.json({ error: "no_file" }, { status: 400 });
+  const idFile = form.get("id");
+  const liveness = form.get("liveness") === "1";
 
-  let filePath: string | undefined;
+  let selfiePath: string | undefined;
   try {
-    filePath = await saveTemp(file);
-    const { verdict, rdStatus } = await detectSettled(filePath, file.name);
+    selfiePath = await saveTemp(file);
+    const { verdict, rdStatus } = await detectSettled(selfiePath, file.name);
+
+    // ID mode: face-match the live selfie against the government ID (if a provider is set).
+    let faceMatchScore: number | null = null;
+    if (link.mode === "id" && idFile instanceof File && faceMatchConfigured()) {
+      const [selfieBuf, idBuf] = await Promise.all([file.arrayBuffer(), idFile.arrayBuffer()]);
+      faceMatchScore = await matchFaces(Buffer.from(selfieBuf), Buffer.from(idBuf)).catch(() => null);
+    }
+
     const check = await prisma.check.create({
       data: {
         userId: link.userId,
@@ -42,11 +53,19 @@ export async function POST(req: Request, ctx: { params: Promise<{ token: string 
         status: "DONE",
       },
     });
-    await prisma.verificationLink.update({ where: { token }, data: { status: "done", checkId: check.id } });
+    await prisma.verificationLink.update({
+      where: { token },
+      data: {
+        status: "done", checkId: check.id,
+        livenessPassed: link.mode === "id" ? liveness : false,
+        idChecked: link.mode === "id" && idFile instanceof File,
+        faceMatchScore,
+      },
+    });
     return NextResponse.json({ ok: true });
   } catch (err: any) {
     return NextResponse.json({ error: "detect_failed", message: err?.message || String(err) }, { status: 502 });
   } finally {
-    if (filePath) await unlinkQuiet(filePath);
+    if (selfiePath) await unlinkQuiet(selfiePath);
   }
 }

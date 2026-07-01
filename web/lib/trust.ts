@@ -6,6 +6,7 @@ import disposableList from "disposable-email-domains";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { complete, extractJSON } from "./ai";
 import { sanctionsConfigured, screenName } from "./sanctions";
+import { networkLookup, recordSignals } from "./fraudnet";
 
 const DISPOSABLE = new Set<string>(disposableList as string[]);
 const FREE_PROVIDERS = new Set([
@@ -25,6 +26,7 @@ export type TrustInput = {
   resumeText?: string;
   checkBand?: string | null; // linked deepfake Check band
   model?: string | null;
+  reporterId?: string;       // account running the check (for the fraud network)
 };
 
 export type TrustResult = { score: number; band: "green" | "yellow" | "red"; signals: Signal[]; resumeFlag?: string; model?: string };
@@ -158,6 +160,12 @@ export async function computeTrust(input: TrustInput): Promise<TrustResult> {
     signals.push(r.sig); resumeFlag = r.verdict; model = r.model;
   }
 
+  // Fraud Intelligence Network — prior flags on this identity from other accounts.
+  if (input.reporterId && (input.email || input.phone)) {
+    const net = await networkLookup(input.email, input.phone, input.reporterId).catch(() => null);
+    if (net) signals.push(net);
+  }
+
   // Weighted penalty model: start at 100, subtract weighted penalties.
   const totalWeight = signals.reduce((s, x) => s + x.weight, 0) || 1;
   const penalty = signals.reduce((s, x) => s + x.weight * PENALTY[x.status], 0);
@@ -171,6 +179,11 @@ export async function computeTrust(input: TrustInput): Promise<TrustResult> {
   else if (riskCount === 1 && band === "green") band = "yellow";
   // A watchlist hit is decisive regardless of the other signals.
   if (sanctionHit) band = "red";
+
+  // Contribute this outcome back to the network (hashes only).
+  if (input.reporterId && (input.email || input.phone)) {
+    await recordSignals(input.email, input.phone, band, input.reporterId).catch(() => {});
+  }
 
   return { score, band, signals, resumeFlag, model };
 }
