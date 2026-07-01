@@ -110,6 +110,17 @@ model Alert {
   @@index([userId, createdAt])
 }
 
+// Monthly public-API usage counter, per account.
+model ApiUsage {
+  id     String @id @default(cuid())
+  userId String
+  period String // e.g. "2026-07"
+  count  Int    @default(0)
+
+  @@unique([userId, period])
+  @@index([userId])
+}
+
 // Developer API keys for the public Trust API (v1). We store only a hash.
 model ApiKey {
   id         String   @id @default(cuid())

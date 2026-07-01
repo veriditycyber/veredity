@@ -2,6 +2,7 @@ import Topbar from "@/components/Topbar";
 import ApiKeys from "@/components/ApiKeys";
 import Webhooks from "@/components/Webhooks";
 import { getCurrentUser } from "@/lib/auth";
+import { apiMonthlyLimit, getApiUsage } from "@/lib/apiusage";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,9 @@ const RESP = `{
 }`;
 
 export default async function DevelopersPage() {
-  await getCurrentUser();
+  const user = (await getCurrentUser())!;
+  const [used, limit] = [await getApiUsage(user.id), apiMonthlyLimit(user.plan)];
+  const pct = Math.min(100, Math.round((used / limit) * 100));
   return (
     <>
       <Topbar title="Developers" crumb="Trust API" />
@@ -35,6 +38,15 @@ export default async function DevelopersPage() {
         <div className="page-head" style={{ marginBottom: 18 }}>
           <h2>Embed TrueHire anywhere</h2>
           <p>Score any candidate&apos;s trust from your own ATS, job board, or backend with a single API call. Keys authenticate as your account and land results in your dashboard.</p>
+        </div>
+
+        <div className="card">
+          <div className="flex-between" style={{ marginBottom: 6 }}>
+            <p className="section-title" style={{ margin: 0 }}>API usage this month</p>
+            <span className="hint"><b style={{ color: "var(--text)" }}>{used.toLocaleString()}</b> / {limit.toLocaleString()} calls</span>
+          </div>
+          <div className="ob-progress" style={{ marginBottom: 0 }}><span style={{ width: `${pct}%` }} /></div>
+          <p className="hint" style={{ marginTop: 8 }}>Requests are rate-limited to {30}/10s per account; the monthly cap scales with your plan.</p>
         </div>
 
         <div className="card">

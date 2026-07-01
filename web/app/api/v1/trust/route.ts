@@ -2,11 +2,14 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { authenticateApiKey } from "@/lib/apikey";
 import { computeTrust } from "@/lib/trust";
+import { rateLimit } from "@/lib/ratelimit";
+import { apiMonthlyLimit, getApiUsage, incrementApiUsage } from "@/lib/apiusage";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
 const CORS = { "access-control-allow-origin": "*", "access-control-allow-headers": "authorization, content-type", "access-control-allow-methods": "POST, OPTIONS" };
+const BURST_LIMIT = 30, BURST_WINDOW_MS = 10_000;
 
 export function OPTIONS() {
   return new NextResponse(null, { status: 204, headers: CORS });
@@ -16,6 +19,19 @@ export function OPTIONS() {
 export async function POST(req: Request) {
   const user = await authenticateApiKey(req);
   if (!user) return NextResponse.json({ error: "unauthorized", message: "Missing or invalid API key." }, { status: 401, headers: CORS });
+
+  // Burst limit (per account, best-effort).
+  const rl = rateLimit(`api:${user.id}`, BURST_LIMIT, BURST_WINDOW_MS);
+  if (!rl.ok) return NextResponse.json({ error: "rate_limited", message: "Too many requests — slow down." }, { status: 429, headers: { ...CORS, "retry-after": String(rl.retryAfter) } });
+
+  // Monthly quota (per plan).
+  const limit = apiMonthlyLimit(user.plan);
+  const used = await getApiUsage(user.id);
+  const quotaHeaders = { "x-ratelimit-limit": String(limit), "x-ratelimit-remaining": String(Math.max(0, limit - used)) };
+  if (used >= limit) {
+    return NextResponse.json({ error: "quota_exceeded", message: `Monthly API quota reached (${limit}). Upgrade your plan for more.` }, { status: 429, headers: { ...CORS, ...quotaHeaders } });
+  }
+  await incrementApiUsage(user.id);
 
   const body = await req.json().catch(() => ({}));
   const email = (body.email || "").toString().trim();
@@ -43,5 +59,5 @@ export async function POST(req: Request) {
   return NextResponse.json({
     id: report.id, score: result.score, band: result.band,
     signals: result.signals.map((s) => ({ key: s.key, label: s.label, status: s.status, detail: s.detail })),
-  }, { headers: CORS });
+  }, { headers: { ...CORS, ...quotaHeaders, "x-ratelimit-remaining": String(Math.max(0, limit - used - 1)) } });
 }
