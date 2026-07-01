@@ -752,3 +752,16 @@ h1,h2,h3,.logo-words,.hero h1,.lp-section .head h2,.cta-band h2,.auth-title{font
 .ar-body{flex:1;min-width:0}
 .ar-msg{font-size:14px;line-height:1.45}
 .ar-meta{font-size:11.5px;color:var(--dim);margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
+
+/* ============ Insights ============ */
+.sig-bars{display:flex;flex-direction:column;gap:11px}
+.sig-bar-row{display:grid;grid-template-columns:140px 1fr 28px;align-items:center;gap:12px}
+.sig-bar-label{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sig-bar-track{height:9px;border-radius:6px;background:var(--line);overflow:hidden}
+.sig-bar-track span{display:block;height:100%;background:var(--text);border-radius:6px}
+.sig-bar-n{font-family:var(--font-display);font-weight:700;font-size:14px;text-align:right}
+.week-bars{display:flex;align-items:flex-end;gap:8px;height:120px}
+.week-bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%}
+.wb-track{flex:1;width:100%;display:flex;align-items:flex-end;background:var(--panel2);border:1px solid var(--line);border-radius:6px;overflow:hidden;min-height:0}
+.wb-track span{display:block;width:100%;background:var(--danger);min-height:2px}
+.wb-label{font-size:10px;color:var(--dim)}

@@ -7,6 +7,7 @@ import ProductHeader from "./ProductHeader";
 
 const TRUEHIRE_NAV = [
   { href: "/dashboard", label: "Dashboard", Icon: Grid },
+  { href: "/insights", label: "Insights", Icon: Target },
   { href: "/candidates", label: "Candidates", Icon: Person },
   { href: "/check", label: "New Check", Icon: Scan },
   { href: "/trust", label: "Trust Score", Icon: Shield },
