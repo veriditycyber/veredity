@@ -46,6 +46,9 @@ model User {
   orgId        String?   // team workspace this user belongs to
   orgRole      String?   // owner | member
   ownedOrgs    Organization[] @relation("OrgOwner")
+  retentionDays Int?     // auto-delete candidate data older than this (null = keep)
+  brandName    String?   // white-label name on shared reports
+  brandColor   String?   // hex accent on shared reports
 
   @@index([googleId])
   @@index([appleId])

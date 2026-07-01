@@ -24,20 +24,27 @@ export default async function VerifiedPage({ params }: { params: Promise<{ token
     );
   }
 
+  const owner = await prisma.user.findUnique({ where: { id: report.userId }, select: { brandName: true, brandColor: true, company: true } });
+  const brand = owner?.brandName || owner?.company || null;
+  const accent = /^#[0-9a-fA-F]{6}$/.test(owner?.brandColor || "") ? owner!.brandColor! : null;
+
   const signals: Signal[] = JSON.parse(report.signals || "[]");
   const ordered = [...signals.filter(s => s.status === "risk"), ...signals.filter(s => s.status === "warn"), ...signals.filter(s => s.status === "ok")];
   const passed = signals.filter(s => s.status === "ok").length;
 
   return (
     <div className="verified-wrap">
-      <div className="verified-card">
+      <div className="verified-card" style={accent ? { borderTop: `3px solid ${accent}` } : undefined}>
         <div className="verified-top">
-          <div className="logo"><LogoMark size={30} /><span className="logo-words">Veridity<small>TrueHire Verified</small></span></div>
+          <div className="logo">
+            <LogoMark size={30} />
+            <span className="logo-words">{brand || "Veridity"}<small>{brand ? "verified by TrueHire" : "TrueHire Verified"}</small></span>
+          </div>
           <PrintButton />
         </div>
 
         <div className={`verified-hero ${report.band}`}>
-          <div className="vh-seal">
+          <div className="vh-seal" style={accent && report.band !== "red" ? { background: accent, color: "#fff" } : undefined}>
             {report.band === "green" ? <Shield /> : report.band === "red" ? <Alert /> : <Shield />}
           </div>
           <div>

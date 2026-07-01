@@ -5,6 +5,7 @@ import { getCandidate } from "@/lib/candidates";
 import { teamUserIds } from "@/lib/team";
 import Topbar from "@/components/Topbar";
 import { BandBadge } from "@/components/Badge";
+import CandidateActions from "@/components/CandidateActions";
 import { Scan, Shield, Sparkle, Camera, Send, Target } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +40,13 @@ export default async function CandidateProfile({ params }: { params: Promise<{ k
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             {summary.worstBand && <BandBadge band={summary.worstBand} status="DONE" />}
             <Link className="btn btn-ghost" href="/candidates">← All candidates</Link>
+          </div>
+        </div>
+
+        <div className="card" style={{ padding: "14px 18px" }}>
+          <div className="flex-between" style={{ flexWrap: "wrap", gap: 10 }}>
+            <span className="hint">Data-subject controls — export everything TrueHire holds on this person, or erase it.</span>
+            <CandidateActions ckey={key} />
           </div>
         </div>
 

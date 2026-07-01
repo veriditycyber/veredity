@@ -8,6 +8,8 @@ import LogoutButton from "@/components/LogoutButton";
 import ModelPreference from "@/components/ModelPreference";
 import ChangePassword from "@/components/ChangePassword";
 import DeleteAccount from "@/components/DeleteAccount";
+import ComplianceSettings from "@/components/ComplianceSettings";
+import BrandingSettings from "@/components/BrandingSettings";
 import { anyProviderConfigured } from "@/lib/ai";
 import { Lock, Shield, Check } from "@/components/icons";
 
@@ -72,6 +74,22 @@ export default async function SettingsPage() {
         <div className="card">
           <p className="section-title">Password</p>
           <ChangePassword hasPassword={!!user.passwordHash} />
+        </div>
+
+        <div className="card">
+          <p className="section-title">Data retention &amp; compliance</p>
+          <p className="muted" style={{ fontSize: 14, margin: "0 0 14px" }}>
+            Auto-delete candidate data on a schedule (GDPR/BIPA). Per-candidate export &amp; erasure live on each candidate&apos;s profile.
+          </p>
+          <ComplianceSettings initial={user.retentionDays} />
+        </div>
+
+        <div className="card">
+          <p className="section-title">Report branding</p>
+          <p className="muted" style={{ fontSize: 14, margin: "0 0 14px" }}>
+            White-label the public <b>TrueHire Verified</b> reports you share with your name and accent color.
+          </p>
+          <BrandingSettings initialName={user.brandName} initialColor={user.brandColor} />
         </div>
 
         <div className="card">
