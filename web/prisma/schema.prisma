@@ -37,9 +37,31 @@ model User {
   tokens       VerificationToken[]
   subscription Subscription?
   payments     Payment[]
+  trustReports TrustReport[]
 
   @@index([googleId])
   @@index([appleId])
+}
+
+// Candidate Trust Score — fuses the deepfake verdict with metadata signals
+// (email, phone, location consistency, résumé authenticity) into one score.
+model TrustReport {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidateName  String?
+  email          String?
+  phone          String?
+  claimedCountry String?  // ISO-2 country the candidate claims (e.g. US, IN)
+  score          Int      // 0-100 overall trust
+  band           String   // green | yellow | red
+  signals        String   // JSON: Signal[] { key, label, status, detail, weight }
+  checkId        String?  // optional linked deepfake Check
+  resumeFlag     String?  // AI verdict on résumé authenticity
+  model          String?  // AI model used for résumé analysis
+  createdAt      DateTime @default(now())
+
+  @@index([userId, createdAt])
 }
 
 // One-time tokens for email verification and password reset.

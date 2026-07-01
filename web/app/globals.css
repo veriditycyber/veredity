@@ -652,3 +652,29 @@ h1,h2,h3,.logo-words,.hero h1,.lp-section .head h2,.cta-band h2,.auth-title{font
 .btn-danger:disabled{opacity:.45;cursor:not-allowed}
 .btn-danger:disabled:hover{background:transparent;color:var(--danger)}
 .danger-zone{border-color:color-mix(in srgb,var(--danger) 30%,var(--line))}
+
+/* ============ Trust Score ============ */
+.trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.trust-head{display:flex;align-items:center;gap:20px;padding:6px 4px 20px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.trust-gauge{flex:none;width:104px;height:104px;border-radius:20px;border:1px solid var(--line);background:var(--panel2);
+  display:grid;place-items:center;text-align:center;position:relative}
+.trust-head.green .trust-gauge{box-shadow:inset 0 0 0 2px var(--line2)}
+.trust-head.yellow .trust-gauge{box-shadow:inset 0 0 0 2px var(--line2)}
+.trust-head.red .trust-gauge{border-color:var(--danger);box-shadow:inset 0 0 0 2px var(--danger)}
+.tg-num{font-family:var(--font-display);font-size:40px;font-weight:700;line-height:1}
+.tg-cap{font-size:11px;color:var(--muted);margin-top:2px}
+.trust-band{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+.trust-head.red .trust-band{color:var(--danger)}
+.trust-signals{display:flex;flex-direction:column;gap:8px}
+.trust-sig{display:flex;gap:11px;align-items:flex-start;padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--panel2)}
+.trust-sig .ts-ic{flex:none;width:22px;height:22px;border-radius:6px;display:grid;place-items:center}
+.trust-sig .ts-ic svg{width:14px;height:14px}
+.trust-sig.ok .ts-ic{color:var(--text)}
+.trust-sig.warn{box-shadow:inset 3px 0 0 var(--line2)}
+.trust-sig.warn .ts-ic{color:var(--muted)}
+.trust-sig.risk{box-shadow:inset 3px 0 0 var(--danger)}
+.trust-sig.risk .ts-ic{color:var(--danger)}
+.trust-sig div{display:flex;flex-direction:column;gap:2px}
+.trust-sig b{font-size:13.5px}
+.trust-sig span{font-size:12.5px;color:var(--muted);line-height:1.45}
+@media (max-width:640px){ .trust-grid{grid-template-columns:1fr} }
