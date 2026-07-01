@@ -16,9 +16,12 @@ export default async function TrustPage() {
     <>
       <Topbar title="Trust Score" crumb="Candidate trust" />
       <div className="content" style={{ maxWidth: 960 }}>
-        <div className="page-head" style={{ marginBottom: 18 }}>
-          <h2>Score a candidate&apos;s trust in seconds</h2>
-          <p>Beyond the face check: TrueHire fuses email, phone, location consistency and résumé authenticity into one fraud signal — built to catch impersonators and fake remote workers.</p>
+        <div className="flex-between" style={{ marginBottom: 18, gap: 12, flexWrap: "wrap" }}>
+          <div className="page-head" style={{ margin: 0 }}>
+            <h2>Score a candidate&apos;s trust in seconds</h2>
+            <p>Beyond the face check: TrueHire fuses email, phone, location consistency, sanctions screening and résumé authenticity into one fraud signal — built to catch impersonators and fake remote workers.</p>
+          </div>
+          <Link className="btn btn-ghost" href="/trust/bulk">Bulk screen →</Link>
         </div>
 
         <TrustFlow />

@@ -220,6 +220,26 @@ an AI key). With Recall configured, paste a real Zoom/Meet link and the bot join
 
 ---
 
+## 6d. Sanctions & watchlist screening (OpenSanctions) — optional
+
+Adds a **sanctions / watchlist** signal to every Trust Score: screens the candidate
+name against OFAC SDN, EU, UN, UK and PEP lists. Directly addresses the sanctions
+liability of the North-Korean-worker problem. Advisory only — a hit flags "manual
+review", never an automated rejection.
+
+1. Get a key at **https://www.opensanctions.org** (they offer hosted API plans and
+   a self-host option).
+2. Set:
+   ```
+   OPENSANCTIONS_API_KEY=...
+   OPENSANCTIONS_API_BASE=https://api.opensanctions.org
+   ```
+
+Without a key, the signal is simply omitted — everything else in the Trust Score
+still works.
+
+---
+
 ## 6c. Trust API (developers) — nothing to configure
 
 The public **Trust API** (`POST /api/v1/trust`) works out of the box — no external

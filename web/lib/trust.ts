@@ -5,6 +5,7 @@ import dns from "node:dns/promises";
 import disposableList from "disposable-email-domains";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { complete, extractJSON } from "./ai";
+import { sanctionsConfigured, screenName } from "./sanctions";
 
 const DISPOSABLE = new Set<string>(disposableList as string[]);
 const FREE_PROVIDERS = new Set([
@@ -136,6 +137,22 @@ export async function computeTrust(input: TrustInput): Promise<TrustResult> {
   signals.push(...analyzeLocation(input.claimedCountry, phoneCountry));
   signals.push(...analyzeCheck(input.checkBand));
 
+  // Sanctions / watchlist screening (advisory) — only when a name is given and a
+  // provider is configured.
+  let sanctionHit = false;
+  if (input.candidateName && input.candidateName.trim().length >= 3 && sanctionsConfigured()) {
+    const s = await screenName(input.candidateName, input.claimedCountry).catch(() => null);
+    if (s) {
+      if (s.hit) {
+        sanctionHit = true;
+        const top = s.matches[0];
+        signals.push({ key: "sanctions", label: "Sanctions / watchlist", status: "risk", weight: 40, detail: `Potential match: "${top?.name}"${top?.topic ? ` (${top.topic})` : ""} on ${top?.datasets?.slice(0, 2).join(", ") || "a watchlist"} — manual review required.` });
+      } else {
+        signals.push({ key: "sanctions", label: "Sanctions / watchlist", status: "ok", weight: 40, detail: "No match on OFAC, EU, UN or UK sanctions & PEP lists." });
+      }
+    }
+  }
+
   if (input.resumeText && input.resumeText.trim().length > 80) {
     const r = await analyzeResume(input.resumeText, input.model);
     signals.push(r.sig); resumeFlag = r.verdict; model = r.model;
@@ -152,6 +169,8 @@ export async function computeTrust(input: TrustInput): Promise<TrustResult> {
   let band: TrustResult["band"] = score >= 70 ? "green" : score >= 40 ? "yellow" : "red";
   if (riskCount >= 2) band = "red";
   else if (riskCount === 1 && band === "green") band = "yellow";
+  // A watchlist hit is decisive regardless of the other signals.
+  if (sanctionHit) band = "red";
 
   return { score, band, signals, resumeFlag, model };
 }
