@@ -38,9 +38,45 @@ model User {
   subscription Subscription?
   payments     Payment[]
   trustReports TrustReport[]
+  botSessions  InterviewSession[]
 
   @@index([googleId])
   @@index([appleId])
+}
+
+// Live interview bot session — a bot joins the call, transcribes in real time,
+// takes notes, verifies the candidate, and produces a scored report.
+model InterviewSession {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidateName  String?
+  role           String?
+  platform       String?  // zoom | meet | teams | manual
+  meetingUrl     String?
+  botId          String?  // Recall.ai bot id
+  status         String   @default("scheduled") // scheduled | joining | in_call | processing | done | failed
+  transcript     String   @default("") // appended live
+  notes          String?  // running AI notes
+  // scored report
+  summary        String?
+  strengths      String?  // JSON string[]
+  concerns       String?  // JSON string[]
+  questions      String?  // JSON string[]
+  recommendation String?  // Strong Yes | Yes | Maybe | No
+  fitScore       Int?
+  // interview integrity (proxy / scripted / deepfake signals)
+  integrity      String?  // JSON: { flags: {label,status,detail}[] }
+  integrityScore Int?     // 0-100 (higher = more trustworthy)
+  checkId        String?  // linked deepfake Check on the recording
+  trustReportId  String?
+  recordingUrl   String?
+  model          String?
+  createdAt      DateTime @default(now())
+  endedAt        DateTime?
+
+  @@index([userId, createdAt])
+  @@index([botId])
 }
 
 // Candidate Trust Score — fuses the deepfake verdict with metadata signals

@@ -190,6 +190,36 @@ Pro (instantly via the success handler, and confirmed by the webhook).
 
 ---
 
+## 6b. Interview Bot — join Zoom / Meet / Teams (Recall.ai)
+
+The Interview Bot sends a notetaker into your video interviews, transcribes them
+live, takes notes, checks integrity, and produces a scored report. Without a key it
+still works in **manual mode** (paste a transcript → get notes + integrity + report).
+
+1. Sign up at **https://www.recall.ai** and note your **workspace region** (e.g.
+   `us-west-2`, `us-east-1`, `eu-central-1`).
+2. Dashboard → **API Keys** → create one:
+   ```
+   RECALL_API_KEY=...
+   RECALL_API_BASE=https://us-west-2.recall.ai/api/v1   # match your region
+   ```
+3. **Webhook** (for live status + transcript): Recall dashboard → *Webhooks* → add
+   endpoint `https://veridity.in/api/bot/webhook`. Pick a secret and set it both on
+   the webhook and in env:
+   ```
+   RECALL_WEBHOOK_SECRET=your-random-string
+   ```
+   Subscribe to bot **status change** and **transcript** events.
+
+> Recall bills per bot-hour. The bot appears as a participant named "TrueHire
+> Notetaker" — most teams announce it for consent, which TrueHire's consent-first
+> stance recommends.
+
+**Test it:** *Interview Bot → Paste a transcript* works with zero setup (just needs
+an AI key). With Recall configured, paste a real Zoom/Meet link and the bot joins.
+
+---
+
 ## 7. Deploying the env vars to Vercel
 
 For each variable above that you filled in locally:
@@ -214,6 +244,7 @@ For each variable above that you filled in locally:
 - [ ] Google button works end-to-end (§4)
 - [ ] Apple button works in production (§5, optional)
 - [ ] Razorpay test payment upgrades the plan; webhook configured (§6)
+- [ ] Interview Bot: manual mode works; Recall configured for live join (§6b)
 - [ ] All vars copied to Vercel + redeployed (§7)
 
 ---
@@ -228,3 +259,5 @@ For each variable above that you filled in locally:
 | Google/Apple | `web/lib/oauth.ts`, `web/app/api/auth/{google,apple}` + callbacks, `web/components/SocialAuth.tsx` |
 | Razorpay | `web/lib/razorpay.ts`, `web/app/api/billing/{subscribe,verify,webhook,cancel}`, `web/components/BillingButton.tsx` |
 | Account | `web/app/api/account/{password,preferences,delete}`, settings page |
+| Trust Score | `web/lib/trust.ts`, `web/app/api/trust`, `web/app/(app)/trust`, `web/components/TrustFlow.tsx` |
+| Interview Bot | `web/lib/recall.ts`, `web/lib/interviewBot.ts`, `web/app/api/bot/*`, `web/app/(app)/bot`, `web/components/{BotStart,BotConsole}.tsx` |
