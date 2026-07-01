@@ -190,6 +190,37 @@ Pro (instantly via the success handler, and confirmed by the webhook).
 
 ---
 
+## 6a. Stripe — international card payments (alongside Razorpay)
+
+The Billing page has a region toggle: **India (Razorpay, INR)** or **International
+(Stripe, USD)**. Stripe is optional — without it, the International option shows a
+"not enabled yet" message and Razorpay keeps working.
+
+1. Create/sign in at **https://dashboard.stripe.com**.
+2. **Products** → create two recurring products with monthly prices:
+   - **Pro** — $49 / month  → copy the **Price ID** (`price_…`)
+   - **Business** — $199 / month → copy its **Price ID**
+   (Adjust the USD numbers in `web/lib/plans.ts` → `USD_PRICE` if you change them.)
+3. **Developers → API keys** → copy the **Secret key**.
+4. **Developers → Webhooks → Add endpoint**:
+   - URL: `https://veridity.in/api/billing/stripe/webhook`
+   - Events: `checkout.session.completed`, `customer.subscription.updated`,
+     `customer.subscription.deleted`
+   - Copy the **Signing secret** (`whsec_…`).
+5. Set:
+   ```
+   STRIPE_SECRET_KEY=sk_live_...        (or sk_test_… while testing)
+   STRIPE_WEBHOOK_SECRET=whsec_...
+   STRIPE_PRICE_PRO=price_...
+   STRIPE_PRICE_BUSINESS=price_...
+   ```
+
+**Test it:** Billing → toggle **International** → Upgrade. In test mode use card
+`4242 4242 4242 4242`, any future expiry/CVC. Plan flips to the chosen tier via the
+webhook.
+
+---
+
 ## 6b. Interview Bot — join Zoom / Meet / Teams (Recall.ai)
 
 The Interview Bot sends a notetaker into your video interviews, transcribes them

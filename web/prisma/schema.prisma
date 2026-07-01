@@ -132,20 +132,25 @@ model VerificationToken {
   @@index([userId, type])
 }
 
-// Razorpay subscription mirror — one active row per user.
+// Subscription mirror — one active row per user (Razorpay or Stripe).
 model Subscription {
   id                     String   @id @default(cuid())
   userId                 String   @unique
   user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   plan                   String   // pro | business
+  provider               String   @default("razorpay") // razorpay | stripe
   status                 String   @default("created") // created | authenticated | active | pending | halted | cancelled | completed | expired
   razorpaySubscriptionId String?  @unique
   razorpayCustomerId     String?
+  stripeSubscriptionId   String?  // indexed; uniqueness enforced in code
+  stripeCustomerId       String?
   shortUrl               String?  // hosted checkout / management url
   currentPeriodEnd       DateTime?
   cancelAtPeriodEnd      Boolean  @default(false)
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
+
+  @@index([stripeSubscriptionId])
 }
 
 // Audit log of payment events from Razorpay webhooks.

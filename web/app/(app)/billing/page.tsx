@@ -1,10 +1,11 @@
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { PLANS, planOf, type Plan } from "@/lib/plans";
+import { PLANS, USD_PRICE, planOf, type Plan } from "@/lib/plans";
+import { razorpayConfigured } from "@/lib/razorpay";
+import { stripeConfigured } from "@/lib/stripe";
 import Topbar from "@/components/Topbar";
-import BillingButton from "@/components/BillingButton";
 import CancelButton from "@/components/CancelButton";
-import { Check } from "@/components/icons";
+import PlanGrid, { type PlanRow } from "@/components/PlanGrid";
 
 export const dynamic = "force-dynamic";
 
@@ -20,13 +21,18 @@ export default async function BillingPage() {
   const order: Plan[] = ["free", "pro", "business"];
   const sub = await prisma.subscription.findUnique({ where: { userId: user.id } });
 
+  const plans: PlanRow[] = order.map((k) => ({
+    key: k, name: PLANS[k].name, inr: PLANS[k].price, usd: USD_PRICE[k], per: PLANS[k].per,
+    features: PLANS[k].features, featured: k === "pro",
+  }));
+
   return (
     <>
       <Topbar title="Billing & Plans" crumb="Subscription" />
       <div className="content">
         <div className="page-head">
           <h2>Plans</h2>
-          <p>You&apos;re on the <b style={{ color: "var(--text)" }}>{PLANS[current].name}</b> plan. Upgrade as your hiring volume grows. Prices in INR, billed monthly via Razorpay.</p>
+          <p>You&apos;re on the <b style={{ color: "var(--text)" }}>{PLANS[current].name}</b> plan. Pay in INR (Razorpay) or with an international card (Stripe).</p>
         </div>
 
         {sub && current !== "free" && (
@@ -36,6 +42,7 @@ export default async function BillingPage() {
                 <p className="section-title" style={{ margin: "0 0 6px" }}>Your subscription</p>
                 <div style={{ fontSize: 15 }}>
                   <b>{PLANS[planOf(sub.plan)].name}</b> · <span className="muted">{STATUS_LABEL[sub.status] || sub.status}</span>
+                  <span className="muted"> · via {sub.provider === "stripe" ? "Stripe" : "Razorpay"}</span>
                   {sub.cancelAtPeriodEnd && <span className="muted"> · ends at period close</span>}
                   {sub.currentPeriodEnd && <span className="muted"> · renews {new Date(sub.currentPeriodEnd).toLocaleDateString()}</span>}
                 </div>
@@ -45,27 +52,13 @@ export default async function BillingPage() {
           </div>
         )}
 
-        <div className="plan-grid">
-          {order.map((k) => {
-            const p = PLANS[k];
-            const isCur = k === current;
-            return (
-              <div key={k} className={`plan${isCur ? " current" : ""}${k === "pro" ? " featured" : ""}`}>
-                {k === "pro" && <span className="plan-tag">Most popular</span>}
-                <div className="plan-name">{p.name}</div>
-                <div className="plan-price">{p.price}<span>{p.per}</span></div>
-                <ul className="plan-feat">{p.features.map((f, i) => <li key={i}><span className="sig-ok"><Check /></span> {f}</li>)}</ul>
-                {isCur ? <button className="btn btn-block" disabled>Current plan</button> : k === "free" ? <button className="btn btn-block" disabled>—</button> : <BillingButton plan={k} label={`Upgrade to ${p.name}`} />}
-              </div>
-            );
-          })}
-        </div>
+        <PlanGrid plans={plans} current={current} razorpayReady={razorpayConfigured()} stripeReady={stripeConfigured()} />
 
         <div className="card" style={{ marginTop: 18 }}>
           <p className="section-title" style={{ margin: "0 0 8px" }}>Payments</p>
           <p className="muted" style={{ fontSize: 14, margin: 0 }}>
-            Payments are processed securely by Razorpay (UPI, cards, netbanking). Veridity never sees your card details.
-            Cancel anytime — your plan stays active until the end of the billing period.
+            Processed securely by Razorpay (UPI, cards, netbanking · INR) and Stripe (international cards · USD).
+            Veridity never sees your card details. Cancel anytime — your plan stays active until the end of the billing period.
           </p>
         </div>
       </div>

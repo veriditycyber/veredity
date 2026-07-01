@@ -37,3 +37,16 @@ export function razorpayPlanId(plan: Plan): string | null {
   if (plan === "free") return null;
   return process.env[RZP_PLAN_ENV[plan]] || null;
 }
+
+// Stripe Price IDs (created once in the Stripe dashboard) — international cards.
+const STRIPE_PRICE_ENV: Record<Exclude<Plan, "free">, string> = {
+  pro: "STRIPE_PRICE_PRO",
+  business: "STRIPE_PRICE_BUSINESS",
+};
+export function stripePriceId(plan: Plan): string | null {
+  if (plan === "free") return null;
+  return process.env[STRIPE_PRICE_ENV[plan]] || null;
+}
+
+// USD display prices for the Stripe (international) path.
+export const USD_PRICE: Record<Plan, string> = { free: "$0", pro: "$49", business: "$199" };
