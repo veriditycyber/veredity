@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { computeTrust } from "@/lib/trust";
+import { createAlert } from "@/lib/alerts";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -46,6 +47,10 @@ export async function POST(req: Request) {
       model: result.model || null,
     },
   });
+
+  if (result.band === "red") {
+    await createAlert(user.id, { candidateName: body.candidateName, band: "red", source: "trust", email: user.email, message: `${body.candidateName || email || phone || "A candidate"} scored ${result.score}/100 — high risk on a trust check.` });
+  }
 
   return NextResponse.json({ id: report.id, ...result });
 }

@@ -41,9 +41,26 @@ model User {
   botSessions  InterviewSession[]
   apiKeys      ApiKey[]
   monitors     Monitor[]
+  alerts       Alert[]
 
   @@index([googleId])
   @@index([appleId])
+}
+
+// High-risk alerts surfaced in the app (and optionally emailed).
+model Alert {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidateName String?
+  band          String   // usually "red"
+  source        String   // trust | bulk | monitor | link
+  message       String
+  read          Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  @@index([userId, read])
+  @@index([userId, createdAt])
 }
 
 // Developer API keys for the public Trust API (v1). We store only a hash.

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { API_KEY, MAX_MONTHLY_SCANS, saveTemp, unlinkQuiet, detectSettled } from "@/lib/rd";
 import { monthlyCheckCount } from "@/lib/usage";
 import { matchFaces, faceMatchConfigured } from "@/lib/facematch";
+import { createAlert } from "@/lib/alerts";
 import { prisma } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -62,6 +63,10 @@ export async function POST(req: Request, ctx: { params: Promise<{ token: string 
         faceMatchScore,
       },
     });
+    if (verdict.band === "red") {
+      const u = await prisma.user.findUnique({ where: { id: link.userId }, select: { email: true } });
+      await createAlert(link.userId, { candidateName: link.candidateName, band: "red", source: "link", email: u?.email, message: `A candidate self-verification (${link.candidateName || "unnamed"}) came back high-risk — likely synthetic media.` });
+    }
     return NextResponse.json({ ok: true });
   } catch (err: any) {
     return NextResponse.json({ error: "detect_failed", message: err?.message || String(err) }, { status: 502 });

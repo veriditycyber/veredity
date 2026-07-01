@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { computeTrust } from "@/lib/trust";
+import { createAlert } from "@/lib/alerts";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -48,5 +49,8 @@ export async function POST(req: Request) {
     yellow: results.filter((r) => r.band === "yellow").length,
     red: results.filter((r) => r.band === "red").length,
   };
+  if (summary.red > 0) {
+    await createAlert(user.id, { band: "red", source: "bulk", email: user.email, message: `${summary.red} of ${summary.total} candidates in a bulk screen were flagged high-risk.` });
+  }
   return NextResponse.json({ results, summary });
 }

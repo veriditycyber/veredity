@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { computeTrust } from "@/lib/trust";
+import { createAlert } from "@/lib/alerts";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -21,6 +22,10 @@ async function runOne(m: { id: string; userId: string; subjectName: string | nul
     await prisma.trustReport.create({
       data: { userId: m.userId, candidateName: m.subjectName, email: m.email, phone: m.phone, claimedCountry: m.claimedCountry, score: res.score, band: res.band, signals: JSON.stringify(res.signals) },
     }).catch(() => {});
+    if (res.band === "red") {
+      const u = await prisma.user.findUnique({ where: { id: m.userId }, select: { email: true } });
+      await createAlert(m.userId, { candidateName: m.subjectName, band: "red", source: "monitor", email: u?.email, message: `Continuous monitoring flagged ${m.subjectName || m.email || "a monitored hire"} as high-risk (score ${res.score}).` });
+    }
   }
   return res ? { id: m.id, score: res.score, band: res.band } : { id: m.id, score: null, band: null };
 }
