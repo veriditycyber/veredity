@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Grid, Scan, Shield, Send, Sparkle, Clock, Card, Gear, Flame, Target, Camera } from "./icons";
+import { Grid, Scan, Shield, Send, Sparkle, Clock, Card, Gear, Flame, Target, Camera, Code } from "./icons";
 import ProductHeader from "./ProductHeader";
 
 const TRUEHIRE_NAV = [
@@ -13,6 +13,7 @@ const TRUEHIRE_NAV = [
   { href: "/interviews", label: "Interview AI", Icon: Sparkle },
   { href: "/links", label: "Verify Links", Icon: Send },
   { href: "/history", label: "History", Icon: Clock },
+  { href: "/developers", label: "Developers", Icon: Code },
   { href: "/billing", label: "Billing", Icon: Card },
   { href: "/settings", label: "Settings", Icon: Gear },
 ];

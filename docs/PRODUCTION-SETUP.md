@@ -220,6 +220,15 @@ an AI key). With Recall configured, paste a real Zoom/Meet link and the bot join
 
 ---
 
+## 6c. Trust API (developers) — nothing to configure
+
+The public **Trust API** (`POST /api/v1/trust`) works out of the box — no external
+service. Users create keys under **Developers**, and calls score candidates and land
+in their dashboard. Only requirement: an AI provider key if you want the résumé
+signal in API responses (§2). Great for embedding TrueHire into an ATS or job board.
+
+---
+
 ## 7. Deploying the env vars to Vercel
 
 For each variable above that you filled in locally:

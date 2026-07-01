@@ -14,6 +14,26 @@ const COUNTRIES = [
 type Signal = { key: string; label: string; status: "ok" | "warn" | "risk"; detail: string };
 type Result = { id: string; score: number; band: "green" | "yellow" | "red"; signals: Signal[]; resumeFlag?: string };
 
+function ShareButton({ id }: { id: string }) {
+  const [url, setUrl] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [copied, setCopied] = useState(false);
+  async function share() {
+    if (url) { navigator.clipboard?.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 1600); return; }
+    setBusy(true);
+    try {
+      const d = await fetch(`/api/trust/${id}/share`, { method: "POST" }).then((r) => r.json());
+      if (d.url) { setUrl(d.url); navigator.clipboard?.writeText(d.url); setCopied(true); setTimeout(() => setCopied(false), 1600); }
+    } finally { setBusy(false); }
+  }
+  return (
+    <div className="actions" style={{ gap: 8 }}>
+      <button className="btn btn-ghost" onClick={share} disabled={busy}>{busy ? "Creating…" : copied ? "Link copied ✓" : url ? "Copy link again" : "Share TrueHire Verified link"}</button>
+      {url && <a className="btn btn-ghost" href={url} target="_blank" rel="noreferrer">Open ↗</a>}
+    </div>
+  );
+}
+
 const BAND_LABEL = { green: "Trusted", yellow: "Review needed", red: "High risk" } as const;
 
 export default function TrustFlow() {
@@ -59,8 +79,9 @@ export default function TrustFlow() {
           ))}
         </div>
 
-        <div className="result-actions">
+        <div className="result-actions" style={{ flexWrap: "wrap", gap: 10 }}>
           <button className="btn btn-ghost" onClick={() => { setRes(null); }}>Score another</button>
+          <ShareButton id={res.id} />
         </div>
       </div>
     );

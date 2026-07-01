@@ -93,3 +93,6 @@ export const Target = (p: SVGProps<SVGSVGElement>) => (
 export const Compass = (p: SVGProps<SVGSVGElement>) => (
   <svg {...base(p)}><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2 5-5 2 2-5z" /></svg>
 );
+export const Code = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base(p)}><path d="m8 8-4 4 4 4" /><path d="m16 8 4 4-4 4" /></svg>
+);

@@ -39,9 +39,25 @@ model User {
   payments     Payment[]
   trustReports TrustReport[]
   botSessions  InterviewSession[]
+  apiKeys      ApiKey[]
 
   @@index([googleId])
   @@index([appleId])
+}
+
+// Developer API keys for the public Trust API (v1). We store only a hash.
+model ApiKey {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  prefix     String   // shown in the UI to identify the key (e.g. thk_live_ab12)
+  keyHash    String   @unique
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
 }
 
 // Live interview bot session — a bot joins the call, transcribes in real time,
@@ -95,9 +111,11 @@ model TrustReport {
   checkId        String?  // optional linked deepfake Check
   resumeFlag     String?  // AI verdict on résumé authenticity
   model          String?  // AI model used for résumé analysis
+  shareToken     String?  // public "TrueHire Verified" share link (random, unique in practice)
   createdAt      DateTime @default(now())
 
   @@index([userId, createdAt])
+  @@index([shareToken])
 }
 
 // One-time tokens for email verification and password reset.
