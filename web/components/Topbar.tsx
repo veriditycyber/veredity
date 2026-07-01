@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Lock } from "./icons";
 import ThemeToggle from "./ThemeToggle";
 import AlertBell from "./AlertBell";
+import CmdkButton from "./CmdkButton";
 
 export default function Topbar({ title, crumb, right }: { title: string; crumb?: string; right?: ReactNode }) {
   return (
@@ -12,6 +13,7 @@ export default function Topbar({ title, crumb, right }: { title: string; crumb?:
       </div>
       <div className="topbar-right">
         {right}
+        <CmdkButton />
         <span className="pill secure"><Lock /> Encrypted session</span>
         <AlertBell />
         <ThemeToggle />

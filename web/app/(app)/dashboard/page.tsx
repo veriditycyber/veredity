@@ -5,9 +5,11 @@ import { monthlyCheckCount } from "@/lib/usage";
 import { effectiveScanLimit } from "@/lib/plans";
 import { networkSize } from "@/lib/fraudnet";
 import { teamUserIds } from "@/lib/team";
+import { anyProviderConfigured } from "@/lib/ai";
 import Topbar from "@/components/Topbar";
 import { BandBadge } from "@/components/Badge";
 import { ActivityChart, RiskDonut } from "@/components/Charts";
+import Onboarding, { type Step } from "@/components/Onboarding";
 import { Scan, Shield, Alert, Inbox } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -30,6 +32,18 @@ export default async function Dashboard() {
     prisma.check.findMany({ where: { ...scope, createdAt: { gte: since } }, select: { createdAt: true, band: true } }),
     networkSize(),
   ]);
+
+  const [trustCount, memberCount] = await Promise.all([
+    prisma.trustReport.count({ where: scope }),
+    user.orgId ? prisma.user.count({ where: { orgId: user.orgId } }) : Promise.resolve(1),
+  ]);
+  const steps: Step[] = [
+    { key: "check", label: "Run your first deepfake check", done: total > 0, href: "/check", cta: "New check" },
+    { key: "trust", label: "Score a candidate's trust", done: trustCount > 0, href: "/trust", cta: "Trust Score" },
+    { key: "ai", label: "Connect an AI provider for interviews & the bot", done: anyProviderConfigured(), href: "/settings", cta: "Settings" },
+    { key: "alerts", label: "Turn on high-risk alerts (email or Slack)", done: !!user.emailVerified || !!user.slackWebhook, href: "/settings", cta: "Set up" },
+    { key: "team", label: "Invite a teammate", done: memberCount > 1, href: "/team", cta: "Invite" },
+  ];
   const scansLeft = Math.max(0, effectiveScanLimit(user.plan) - monthUsed);
 
   // 14-day activity buckets
@@ -49,6 +63,7 @@ export default async function Dashboard() {
       <Topbar title="Dashboard" crumb="Overview"
         right={<span className="pill"><span className="dot-live" /> <b>{scansLeft}</b>&nbsp;scans left</span>} />
       <div className="content">
+        <Onboarding steps={steps} />
         <div className="flex-between" style={{ marginBottom: 18 }}>
           <div className="page-head" style={{ margin: 0 }}>
             <h2>Welcome back{user.name ? `, ${user.name.split(" ")[0]}` : ""}</h2>

@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { isAdmin } from "@/lib/perms";
 import Sidebar from "@/components/Sidebar";
 import VerifyBanner from "@/components/VerifyBanner";
+import CommandPalette from "@/components/CommandPalette";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser();
@@ -14,6 +15,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         {!user.emailVerified && <VerifyBanner email={user.email} />}
         {children}
       </main>
+      <CommandPalette />
     </div>
   );
 }
