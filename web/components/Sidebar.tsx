@@ -16,9 +16,9 @@ const TRUEHIRE_NAV = [
   { href: "/links", label: "Verify Links", Icon: Send },
   { href: "/monitor", label: "Monitoring", Icon: Target },
   { href: "/history", label: "History", Icon: Clock },
-  { href: "/developers", label: "Developers", Icon: Code },
+  { href: "/developers", label: "Developers", Icon: Code, adminOnly: true },
   { href: "/team", label: "Team", Icon: Users },
-  { href: "/billing", label: "Billing", Icon: Card },
+  { href: "/billing", label: "Billing", Icon: Card, adminOnly: true },
   { href: "/settings", label: "Settings", Icon: Gear },
 ];
 
@@ -35,10 +35,10 @@ function isActive(path: string, href: string) {
   return path === href || path.startsWith(href + "/");
 }
 
-export default function Sidebar({ name, company }: { name: string; company: string }) {
+export default function Sidebar({ name, company, admin = true }: { name: string; company: string; admin?: boolean }) {
   const path = usePathname();
   const product = path.startsWith("/forge") ? "forge" : "truehire";
-  const nav = product === "forge" ? FORGE_NAV : TRUEHIRE_NAV;
+  const nav = (product === "forge" ? FORGE_NAV : TRUEHIRE_NAV).filter((n: any) => admin || !n.adminOnly);
   const initial = (name || "U").trim().charAt(0).toUpperCase();
   return (
     <aside className="sidebar">

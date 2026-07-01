@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCandidate } from "@/lib/candidates";
 import { teamUserIds } from "@/lib/team";
+import { isAdmin } from "@/lib/perms";
 import Topbar from "@/components/Topbar";
 import { BandBadge } from "@/components/Badge";
 import CandidateActions from "@/components/CandidateActions";
@@ -46,7 +47,7 @@ export default async function CandidateProfile({ params }: { params: Promise<{ k
         <div className="card" style={{ padding: "14px 18px" }}>
           <div className="flex-between" style={{ flexWrap: "wrap", gap: 10 }}>
             <span className="hint">Data-subject controls — export everything TrueHire holds on this person, or erase it.</span>
-            <CandidateActions ckey={key} />
+            <CandidateActions ckey={key} admin={isAdmin(user)} />
           </div>
         </div>
 

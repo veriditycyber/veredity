@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { teamUserIds } from "@/lib/team";
 import { eraseCandidate, exportCandidate } from "@/lib/retention";
+import { isAdmin } from "@/lib/perms";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -22,6 +23,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ key: str
 export async function DELETE(req: Request, { params }: { params: Promise<{ key: string }> }) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  if (!isAdmin(user)) return NextResponse.json({ error: "forbidden", message: "Only admins can erase candidate data." }, { status: 403 });
   const { key } = await params;
   const name = decodeURIComponent(key);
   const counts = await eraseCandidate(await teamUserIds(user), name);

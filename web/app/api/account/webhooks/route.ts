@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { newSecret, WEBHOOK_EVENTS } from "@/lib/webhooks";
+import { isAdmin } from "@/lib/perms";
 
 export const runtime = "nodejs";
 
@@ -15,6 +16,7 @@ export async function GET() {
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  if (!isAdmin(user)) return NextResponse.json({ error: "forbidden", message: "Only admins manage webhooks." }, { status: 403 });
   const { action, id, url, events } = await req.json().catch(() => ({}));
 
   if (action === "delete") {

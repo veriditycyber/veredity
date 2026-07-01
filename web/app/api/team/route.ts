@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { sendEmail, appUrl, emailConfigured } from "@/lib/email";
+import { isAdmin, isOwner } from "@/lib/perms";
 
 export const runtime = "nodejs";
 
@@ -28,7 +29,13 @@ export async function GET() {
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  const { action, email, id, token } = await req.json().catch(() => ({}));
+  const { action, email, id, token, role } = await req.json().catch(() => ({}));
+
+  // Accepting an invite is allowed for anyone with the token; everything else that
+  // mutates the workspace requires admin.
+  if (action !== "accept" && user.orgId && !isAdmin(user)) {
+    return NextResponse.json({ error: "forbidden", message: "Only workspace admins can do that." }, { status: 403 });
+  }
 
   if (action === "invite") {
     const e = (email || "").toString().trim().toLowerCase();
@@ -53,6 +60,15 @@ export async function POST(req: Request) {
 
   if (action === "revoke_invite") {
     if (user.orgId) await prisma.invite.deleteMany({ where: { id, orgId: user.orgId } });
+    return NextResponse.json({ ok: true });
+  }
+
+  if (action === "set_role") {
+    if (!isOwner(user)) return NextResponse.json({ error: "forbidden" }, { status: 403 });
+    if (id === user.id) return NextResponse.json({ error: "cant_change_self" }, { status: 400 });
+    const target = user.orgId ? await prisma.user.findFirst({ where: { id, orgId: user.orgId }, select: { orgRole: true } }) : null;
+    if (!target || target.orgRole === "owner") return NextResponse.json({ error: "bad_target" }, { status: 400 });
+    await prisma.user.updateMany({ where: { id, orgId: user.orgId }, data: { orgRole: role === "admin" ? "admin" : "member" } });
     return NextResponse.json({ ok: true });
   }
 

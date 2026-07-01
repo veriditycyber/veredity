@@ -3,12 +3,14 @@ import { getCurrentUser } from "@/lib/auth";
 import { planOf, stripePriceId, type Plan } from "@/lib/plans";
 import { stripeConfigured, createCheckoutSession } from "@/lib/stripe";
 import { appUrl } from "@/lib/email";
+import { isAdmin } from "@/lib/perms";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  if (!isAdmin(user)) return NextResponse.json({ error: "forbidden", message: "Only workspace admins manage billing." }, { status: 403 });
   if (!stripeConfigured()) {
     return NextResponse.json({ error: "not_enabled", message: "International card payments aren't enabled yet. Connect Stripe to turn them on." }, { status: 503 });
   }

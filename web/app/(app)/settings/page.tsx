@@ -10,7 +10,9 @@ import ChangePassword from "@/components/ChangePassword";
 import DeleteAccount from "@/components/DeleteAccount";
 import ComplianceSettings from "@/components/ComplianceSettings";
 import BrandingSettings from "@/components/BrandingSettings";
+import SlackSettings from "@/components/SlackSettings";
 import { anyProviderConfigured } from "@/lib/ai";
+import { isAdmin } from "@/lib/perms";
 import { Lock, Shield, Check } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -76,13 +78,15 @@ export default async function SettingsPage() {
           <ChangePassword hasPassword={!!user.passwordHash} />
         </div>
 
-        <div className="card">
-          <p className="section-title">Data retention &amp; compliance</p>
-          <p className="muted" style={{ fontSize: 14, margin: "0 0 14px" }}>
-            Auto-delete candidate data on a schedule (GDPR/BIPA). Per-candidate export &amp; erasure live on each candidate&apos;s profile.
-          </p>
-          <ComplianceSettings initial={user.retentionDays} />
-        </div>
+        {isAdmin(user) && (
+          <div className="card">
+            <p className="section-title">Data retention &amp; compliance</p>
+            <p className="muted" style={{ fontSize: 14, margin: "0 0 14px" }}>
+              Auto-delete candidate data on a schedule (GDPR/BIPA). Per-candidate export &amp; erasure live on each candidate&apos;s profile.
+            </p>
+            <ComplianceSettings initial={user.retentionDays} />
+          </div>
+        )}
 
         <div className="card">
           <p className="section-title">Report branding</p>
@@ -90,6 +94,14 @@ export default async function SettingsPage() {
             White-label the public <b>TrueHire Verified</b> reports you share with your name and accent color.
           </p>
           <BrandingSettings initialName={user.brandName} initialColor={user.brandColor} />
+        </div>
+
+        <div className="card">
+          <p className="section-title">Slack alerts</p>
+          <p className="muted" style={{ fontSize: 14, margin: "0 0 14px" }}>
+            Get a Slack ping the moment a candidate is flagged high-risk. Paste an incoming-webhook URL from your Slack workspace.
+          </p>
+          <SlackSettings initial={user.slackWebhook} />
         </div>
 
         <div className="card">

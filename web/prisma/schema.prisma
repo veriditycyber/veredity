@@ -49,6 +49,7 @@ model User {
   retentionDays Int?     // auto-delete candidate data older than this (null = keep)
   brandName    String?   // white-label name on shared reports
   brandColor   String?   // hex accent on shared reports
+  slackWebhook String?   // Slack incoming webhook for high-risk alerts
 
   @@index([googleId])
   @@index([appleId])

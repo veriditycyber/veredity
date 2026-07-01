@@ -3,12 +3,14 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { planOf, razorpayPlanId, type Plan } from "@/lib/plans";
 import { razorpayConfigured, createSubscription, RAZORPAY_KEY_ID } from "@/lib/razorpay";
+import { isAdmin } from "@/lib/perms";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  if (!isAdmin(user)) return NextResponse.json({ error: "forbidden", message: "Only workspace admins manage billing." }, { status: 403 });
   if (!razorpayConfigured()) {
     return NextResponse.json({ error: "not_enabled", message: "Payments aren't enabled yet. Connect Razorpay to turn on self-serve upgrades." }, { status: 503 });
   }

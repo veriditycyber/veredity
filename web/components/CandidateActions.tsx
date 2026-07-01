@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function CandidateActions({ ckey }: { ckey: string }) {
+export default function CandidateActions({ ckey, admin = true }: { ckey: string; admin?: boolean }) {
   const router = useRouter();
   const [confirm, setConfirm] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -21,7 +21,7 @@ export default function CandidateActions({ ckey }: { ckey: string }) {
   return (
     <div className="actions" style={{ margin: 0, gap: 8 }}>
       <a className="btn btn-ghost" href={`/api/candidates/${ckey}?export=1`}>Export data</a>
-      {!confirm ? (
+      {!admin ? null : !confirm ? (
         <button className="btn btn-danger" onClick={() => setConfirm(true)}>Erase all data</button>
       ) : (
         <>

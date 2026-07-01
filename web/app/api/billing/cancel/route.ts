@@ -3,12 +3,14 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { cancelSubscription } from "@/lib/razorpay";
 import { cancelStripeSubscription } from "@/lib/stripe";
+import { isAdmin } from "@/lib/perms";
 
 export const runtime = "nodejs";
 
 export async function POST() {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  if (!isAdmin(user)) return NextResponse.json({ error: "forbidden", message: "Only workspace admins manage billing." }, { status: 403 });
 
   const sub = await prisma.subscription.findUnique({ where: { userId: user.id } });
   if (!sub) return NextResponse.json({ ok: false, message: "No active subscription." }, { status: 404 });

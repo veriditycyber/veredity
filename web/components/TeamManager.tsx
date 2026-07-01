@@ -10,6 +10,7 @@ export default function TeamManager({ selfId }: { selfId: string }) {
   const [invites, setInvites] = useState<Inv[]>([]);
   const [isOwner, setIsOwner] = useState(false);
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("member");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
 
@@ -23,19 +24,23 @@ export default function TeamManager({ selfId }: { selfId: string }) {
     if (!email.trim() || busy) return;
     setBusy(true); setMsg("");
     try {
-      const d = await fetch("/api/team", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "invite", email }) }).then((r) => r.json());
+      const d = await fetch("/api/team", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "invite", email, role }) }).then((r) => r.json());
       if (d.ok) { setMsg(`Invite sent. Share this link if needed: ${d.url}`); setEmail(""); load(); }
       else setMsg(d.message || "Could not invite.");
     } finally { setBusy(false); }
   }
-  async function act(action: string, id: string) { await fetch("/api/team", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, id }) }); load(); }
+  async function act(action: string, id: string, extra: object = {}) { await fetch("/api/team", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, id, ...extra }) }); load(); }
 
   return (
     <>
       <div className="card">
         <p className="section-title" style={{ margin: "0 0 12px" }}>Invite a teammate</p>
         <div className="actions">
-          <input className="input" type="email" placeholder="teammate@company.com" value={email} onChange={(e) => setEmail(e.target.value)} style={{ flex: 1, minWidth: 240 }} />
+          <input className="input" type="email" placeholder="teammate@company.com" value={email} onChange={(e) => setEmail(e.target.value)} style={{ flex: 1, minWidth: 220 }} />
+          <select className="input" value={role} onChange={(e) => setRole(e.target.value)} style={{ maxWidth: 130 }}>
+            <option value="member">Member</option>
+            <option value="admin">Admin</option>
+          </select>
           <button className="btn btn-primary" onClick={invite} disabled={busy}>{busy ? "Inviting…" : "Send invite"}</button>
         </div>
         {msg && <p className="hint" style={{ marginTop: 10, wordBreak: "break-all" }}>{msg}</p>}
@@ -52,7 +57,14 @@ export default function TeamManager({ selfId }: { selfId: string }) {
                 <td>{m.name || "—"}{m.id === selfId && <span className="muted" style={{ fontSize: 12 }}> · you</span>}</td>
                 <td className="muted">{m.email}</td>
                 <td><span className="badge gray">{m.orgRole || "member"}</span></td>
-                <td style={{ textAlign: "right" }}>{isOwner && m.id !== selfId && <button className="btn btn-ghost" onClick={() => act("remove_member", m.id)}>Remove</button>}</td>
+                <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
+                  {isOwner && m.id !== selfId && m.orgRole !== "owner" && (
+                    <>
+                      <button className="btn btn-ghost" onClick={() => act("set_role", m.id, { role: m.orgRole === "admin" ? "member" : "admin" })}>{m.orgRole === "admin" ? "Make member" : "Make admin"}</button>
+                      <button className="btn btn-ghost" onClick={() => act("remove_member", m.id)}>Remove</button>
+                    </>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
