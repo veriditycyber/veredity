@@ -1,5 +1,6 @@
 import Topbar from "@/components/Topbar";
 import ApiKeys from "@/components/ApiKeys";
+import Webhooks from "@/components/Webhooks";
 import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +40,12 @@ export default async function DevelopersPage() {
         <div className="card">
           <p className="section-title">API keys</p>
           <ApiKeys />
+        </div>
+
+        <div className="card" style={{ marginTop: 16 }}>
+          <p className="section-title">Webhooks</p>
+          <p className="hint" style={{ margin: "0 0 12px" }}>Get a signed POST to your systems when a candidate is scored, flagged high-risk, or a verification completes.</p>
+          <Webhooks />
         </div>
 
         <div className="card" style={{ marginTop: 16 }}>

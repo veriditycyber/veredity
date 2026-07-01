@@ -21,14 +21,15 @@ export type CandidateSummary = {
   worstBand: string | null; records: number; lastActivity: Date; types: string[];
 };
 
-export async function listCandidates(userId: string, query?: string): Promise<CandidateSummary[]> {
+export async function listCandidates(userIds: string[], query?: string): Promise<CandidateSummary[]> {
+  const where = { userId: { in: userIds } };
   const [checks, trust, interviews, bots, links, monitors] = await Promise.all([
-    prisma.check.findMany({ where: { userId }, select: { candidateName: true, band: true, createdAt: true }, take: 1000 }),
-    prisma.trustReport.findMany({ where: { userId }, select: { candidateName: true, email: true, phone: true, band: true, createdAt: true }, take: 1000 }),
-    prisma.interview.findMany({ where: { userId }, select: { candidateName: true, createdAt: true }, take: 1000 }),
-    prisma.interviewSession.findMany({ where: { userId }, select: { candidateName: true, createdAt: true }, take: 1000 }),
-    prisma.verificationLink.findMany({ where: { userId }, select: { candidateName: true, createdAt: true }, take: 1000 }),
-    prisma.monitor.findMany({ where: { userId }, select: { subjectName: true, email: true, phone: true, lastBand: true, createdAt: true }, take: 1000 }),
+    prisma.check.findMany({ where, select: { candidateName: true, band: true, createdAt: true }, take: 1000 }),
+    prisma.trustReport.findMany({ where, select: { candidateName: true, email: true, phone: true, band: true, createdAt: true }, take: 1000 }),
+    prisma.interview.findMany({ where, select: { candidateName: true, createdAt: true }, take: 1000 }),
+    prisma.interviewSession.findMany({ where, select: { candidateName: true, createdAt: true }, take: 1000 }),
+    prisma.verificationLink.findMany({ where, select: { candidateName: true, createdAt: true }, take: 1000 }),
+    prisma.monitor.findMany({ where, select: { subjectName: true, email: true, phone: true, lastBand: true, createdAt: true }, take: 1000 }),
   ]);
 
   const map = new Map<string, CandidateSummary>();
@@ -58,21 +59,22 @@ export async function listCandidates(userId: string, query?: string): Promise<Ca
   return out.sort((a, b) => b.lastActivity.getTime() - a.lastActivity.getTime());
 }
 
-export async function getCandidate(userId: string, name: string) {
+export async function getCandidate(userIds: string[], name: string) {
   const n = normName(name);
-  const all = await listCandidates(userId);
+  const all = await listCandidates(userIds);
   const summary = all.find((c) => normName(c.name) === n);
   if (!summary) return null;
 
   // Fetch full records for this name (case-insensitive).
   const nameFilter = { equals: summary.name, mode: "insensitive" as const };
+  const uid = { in: userIds };
   const [checks, trust, interviews, bots, links, monitors] = await Promise.all([
-    prisma.check.findMany({ where: { userId, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
-    prisma.trustReport.findMany({ where: { userId, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
-    prisma.interview.findMany({ where: { userId, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
-    prisma.interviewSession.findMany({ where: { userId, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
-    prisma.verificationLink.findMany({ where: { userId, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
-    prisma.monitor.findMany({ where: { userId, subjectName: nameFilter }, orderBy: { createdAt: "desc" } }),
+    prisma.check.findMany({ where: { userId: uid, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
+    prisma.trustReport.findMany({ where: { userId: uid, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
+    prisma.interview.findMany({ where: { userId: uid, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
+    prisma.interviewSession.findMany({ where: { userId: uid, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
+    prisma.verificationLink.findMany({ where: { userId: uid, candidateName: nameFilter }, orderBy: { createdAt: "desc" } }),
+    prisma.monitor.findMany({ where: { userId: uid, subjectName: nameFilter }, orderBy: { createdAt: "desc" } }),
   ]);
   return { summary, checks, trust, interviews, bots, links, monitors };
 }

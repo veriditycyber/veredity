@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import Topbar from "@/components/Topbar";
 import { RiskDonut, ActivityChart } from "@/components/Charts";
+import { teamUserIds } from "@/lib/team";
 import { Shield, Alert, Scan, Inbox } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -10,9 +11,10 @@ export default async function InsightsPage() {
   const user = (await getCurrentUser())!;
   const since = new Date(); since.setHours(0, 0, 0, 0); since.setDate(since.getDate() - 13);
 
+  const ids = await teamUserIds(user);
   const [checks, trust] = await Promise.all([
-    prisma.check.findMany({ where: { userId: user.id }, select: { band: true, createdAt: true }, take: 3000 }),
-    prisma.trustReport.findMany({ where: { userId: user.id }, select: { band: true, score: true, signals: true, createdAt: true }, take: 3000 }),
+    prisma.check.findMany({ where: { userId: { in: ids } }, select: { band: true, createdAt: true }, take: 3000 }),
+    prisma.trustReport.findMany({ where: { userId: { in: ids } }, select: { band: true, score: true, signals: true, createdAt: true }, take: 3000 }),
   ]);
 
   // Combined band distribution

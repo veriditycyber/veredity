@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { monthlyCheckCount } from "@/lib/usage";
 import { effectiveScanLimit } from "@/lib/plans";
 import { networkSize } from "@/lib/fraudnet";
+import { teamUserIds } from "@/lib/team";
 import Topbar from "@/components/Topbar";
 import { BandBadge } from "@/components/Badge";
 import { ActivityChart, RiskDonut } from "@/components/Charts";
@@ -17,14 +18,16 @@ export default async function Dashboard() {
   since.setHours(0, 0, 0, 0);
   since.setDate(since.getDate() - 13);
 
+  const ids = await teamUserIds(user);
+  const scope = { userId: { in: ids } };
   const [total, green, yellow, red, monthUsed, recent, last14, netSize] = await Promise.all([
-    prisma.check.count({ where: { userId: user.id } }),
-    prisma.check.count({ where: { userId: user.id, band: "green" } }),
-    prisma.check.count({ where: { userId: user.id, band: "yellow" } }),
-    prisma.check.count({ where: { userId: user.id, band: "red" } }),
+    prisma.check.count({ where: scope }),
+    prisma.check.count({ where: { ...scope, band: "green" } }),
+    prisma.check.count({ where: { ...scope, band: "yellow" } }),
+    prisma.check.count({ where: { ...scope, band: "red" } }),
     monthlyCheckCount(),
-    prisma.check.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, take: 6 }),
-    prisma.check.findMany({ where: { userId: user.id, createdAt: { gte: since } }, select: { createdAt: true, band: true } }),
+    prisma.check.findMany({ where: scope, orderBy: { createdAt: "desc" }, take: 6 }),
+    prisma.check.findMany({ where: { ...scope, createdAt: { gte: since } }, select: { createdAt: true, band: true } }),
     networkSize(),
   ]);
   const scansLeft = Math.max(0, effectiveScanLimit(user.plan) - monthUsed);

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { listCandidates } from "@/lib/candidates";
+import { teamUserIds } from "@/lib/team";
 import Topbar from "@/components/Topbar";
 import { BandBadge } from "@/components/Badge";
 import { Person } from "@/components/icons";
@@ -12,7 +13,7 @@ const TYPE_LABEL: Record<string, string> = { check: "Deepfake", trust: "Trust", 
 export default async function CandidatesPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const user = (await getCurrentUser())!;
   const { q } = await searchParams;
-  const candidates = await listCandidates(user.id, q);
+  const candidates = await listCandidates(await teamUserIds(user), q);
 
   return (
     <>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCandidate } from "@/lib/candidates";
+import { teamUserIds } from "@/lib/team";
 import Topbar from "@/components/Topbar";
 import { BandBadge } from "@/components/Badge";
 import { Scan, Shield, Sparkle, Camera, Send, Target } from "@/components/icons";
@@ -22,7 +23,7 @@ export default async function CandidateProfile({ params }: { params: Promise<{ k
   const { key } = await params;
   const user = (await getCurrentUser())!;
   const name = decodeURIComponent(key);
-  const data = await getCandidate(user.id, name);
+  const data = await getCandidate(await teamUserIds(user), name);
   if (!data) notFound();
   const { summary, checks, trust, interviews, bots, links, monitors } = data;
 

@@ -42,9 +42,52 @@ model User {
   apiKeys      ApiKey[]
   monitors     Monitor[]
   alerts       Alert[]
+  webhooks     Webhook[]
+  orgId        String?   // team workspace this user belongs to
+  orgRole      String?   // owner | member
+  ownedOrgs    Organization[] @relation("OrgOwner")
 
   @@index([googleId])
   @@index([appleId])
+  @@index([orgId])
+}
+
+// Outbound webhooks — push events to the customer's own systems.
+model Webhook {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url        String
+  secret     String   // HMAC signing secret (shown once)
+  events     String   // comma-separated event names, or "*"
+  active     Boolean  @default(true)
+  lastStatus Int?     // last delivery HTTP status
+  lastAt     DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+}
+
+// Team workspace.
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  ownerId   String
+  owner     User     @relation("OrgOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  invites   Invite[]
+}
+
+model Invite {
+  id        String   @id @default(cuid())
+  orgId     String
+  org       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  email     String
+  token     String   @unique
+  status    String   @default("pending") // pending | accepted
+  createdAt DateTime @default(now())
+
+  @@index([orgId])
 }
 
 // High-risk alerts surfaced in the app (and optionally emailed).

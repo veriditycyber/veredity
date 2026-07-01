@@ -3,6 +3,7 @@ import { API_KEY, MAX_MONTHLY_SCANS, saveTemp, unlinkQuiet, detectSettled } from
 import { monthlyCheckCount } from "@/lib/usage";
 import { matchFaces, faceMatchConfigured } from "@/lib/facematch";
 import { createAlert } from "@/lib/alerts";
+import { dispatch } from "@/lib/webhooks";
 import { prisma } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -63,9 +64,11 @@ export async function POST(req: Request, ctx: { params: Promise<{ token: string 
         faceMatchScore,
       },
     });
+    await dispatch(link.userId, "verification.completed", { candidateName: link.candidateName, band: verdict.band, score: verdict.score, mode: link.mode, checkId: check.id });
     if (verdict.band === "red") {
       const u = await prisma.user.findUnique({ where: { id: link.userId }, select: { email: true } });
       await createAlert(link.userId, { candidateName: link.candidateName, band: "red", source: "link", email: u?.email, message: `A candidate self-verification (${link.candidateName || "unnamed"}) came back high-risk — likely synthetic media.` });
+      await dispatch(link.userId, "candidate.high_risk", { candidateName: link.candidateName, band: verdict.band, score: verdict.score, source: "link" });
     }
     return NextResponse.json({ ok: true });
   } catch (err: any) {
